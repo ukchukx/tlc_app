@@ -5,6 +5,8 @@ defmodule TlcApp.Accounts.User do
   @student "student"
   @staff "staff"
 
+  @derive {Jason.Encoder, only: [:first_name, :last_name, :email, :phone, :role]}
+
   schema "users" do
     field :first_name, :string
     field :last_name, :string

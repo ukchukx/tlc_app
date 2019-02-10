@@ -8,4 +8,5 @@ defmodule TlcApp.Repo.Migrations.CreateAttendances do
 
       timestamps()
     end
+  end
 end

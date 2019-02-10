@@ -1,0 +1,1 @@
+<login error-message="<%= get_flash(@conn, :error)%>" form-path="<%= @path %>" />

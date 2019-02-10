@@ -10,6 +10,8 @@ defmodule TlcApp.Accounts do
 
   alias TlcApp.Accounts.User
 
+  require Logger
+
   @doc """
   Returns the list of users.
 
@@ -86,6 +88,22 @@ defmodule TlcApp.Accounts do
     case Map.get(attrs, "password") do
       nil -> create_user(Map.merge(attrs, %{"password" => "cafebabe"}))
       _ -> create_user(attrs)
+    end
+  end
+
+  def create_first_user do
+    count = Repo.aggregate(User, :count, :id)
+    Logger.info "There are #{count} users"
+
+    if count == 0 do
+      Logger.info "Create an admin"
+
+      create_staff(%{
+        "first_name" => "First",
+        "last_name" => "Adam",
+        "phone" => "08125390122",
+        "email" => "ukchukundah@gmail.com"
+      })
     end
   end
 

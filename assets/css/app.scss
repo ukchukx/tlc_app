@@ -1,7 +1,5 @@
 /* This file is for your main application css. */
 @import '~bootstrap/dist/css/bootstrap.css';
 @import '~bootstrap-vue/dist/bootstrap-vue.css';
-$fa-font-path: "~@fortawesome/fontawesome-free/webfonts";
-@import '~@fortawesome/fontawesome-free/scss/brands';
-@import '~@fortawesome/fontawesome-free/scss/regular';
-@import '~@fortawesome/fontawesome-free/scss/solid';
+@import '~vue-flash-message/dist/vue-flash-message.min.css';
+@import 'sb-admin.css';

@@ -19,7 +19,13 @@ defmodule TlcApp.Application do
     # See https://hexdocs.pm/elixir/Supervisor.html
     # for other strategies and supported options
     opts = [strategy: :one_for_one, name: TlcApp.Supervisor]
-    Supervisor.start_link(children, opts)
+    case Supervisor.start_link(children, opts) do
+      {:ok, _} = res ->
+        TlcApp.Accounts.create_first_user()
+
+        res
+        x -> x
+    end
   end
 
   # Tell Phoenix to update the endpoint configuration

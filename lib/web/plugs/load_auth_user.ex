@@ -1,4 +1,4 @@
-defmodule TlcApp.Web.Plug.Auth do
+defmodule TlcApp.Web.Plug.LoadAuthUser do
   import Plug.Conn
 
   def init(opts), do: opts
