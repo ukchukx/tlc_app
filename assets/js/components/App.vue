@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import Hello from './components/Hello';
+import Hello from './Hello';
 export default {
     name: 'app',
     components: {
@@ -19,9 +19,9 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss">
 #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;

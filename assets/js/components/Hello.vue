@@ -16,8 +16,8 @@ export default {
 };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 p {
-    margin-top: 40px;
+  margin-top: 40px;
 }
 </style>
