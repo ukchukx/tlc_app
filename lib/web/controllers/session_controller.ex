@@ -27,7 +27,7 @@ defmodule TlcApp.Web.SessionController do
 
   def delete_session(conn, _) do
     conn
-    |> Accounts.signout()
+    |> clear_session
     |> redirect(to: Routes.session_path(conn, :signin))
   end
 

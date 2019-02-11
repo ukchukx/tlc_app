@@ -24,7 +24,7 @@ defmodule TlcApp.Web.Router do
 
     get "/signin", SessionController, :signin
     post "/signin", SessionController, :create_session
-    delete "/signout", SessionController, :delete_session
+    get "/signout", SessionController, :delete_session
 
     get "/bo", PageController, :bo_index
 
