@@ -9,6 +9,7 @@ defmodule TlcApp.Repo.Migrations.CreateUsers do
       add :phone, :string
       add :password_hash, :string
       add :role, :string
+      add :active, :boolean, default: true
 
       timestamps()
     end

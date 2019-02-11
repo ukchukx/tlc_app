@@ -29,6 +29,10 @@ defmodule TlcApp.Accounts do
     Repo.all(from u in User, where: u.role == ^User.student_role())
   end
 
+  def list_active_students do
+    Repo.all(from u in User, where: u.role == ^User.student_role() and u.active)
+  end
+
   def list_staff do
     Repo.all(from u in User, where: u.role == ^User.staff_role())
   end
@@ -149,15 +153,18 @@ defmodule TlcApp.Accounts do
   end
 
   def signin_with_email_and_password(conn, email, pass) do
-    user = Repo.get_by(User, email: email)
-    cond do
-      user && checkpw(pass, user.password_hash) ->
-      {:ok, signin(conn, user)}
-      user ->
-        {:error, :unauthorized, conn}
-      true ->
+    case Repo.get_by(User, email: email) do
+      %{active: true} = user ->
+        cond do
+          user && checkpw(pass, user.password_hash) ->
+          {:ok, signin(conn, user)}
+          user ->
+            {:error, :unauthorized, conn}
+        end
+
+      _ ->
         dummy_checkpw()
-        {:error, :not_found, conn}
+        {:error, :inactive, conn}
     end
   end
 
@@ -166,9 +173,5 @@ defmodule TlcApp.Accounts do
     |> assign(:current_user, user)
     |> put_session(:user_id, user.id)
     |> configure_session(renew: true)
-  end
-
-  def signout(conn) do
-    configure_session(conn, drop: true)
   end
 end

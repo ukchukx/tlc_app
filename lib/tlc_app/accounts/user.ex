@@ -5,7 +5,7 @@ defmodule TlcApp.Accounts.User do
   @student "student"
   @staff "staff"
 
-  @derive {Jason.Encoder, only: [:first_name, :last_name, :email, :phone, :role]}
+  @derive {Jason.Encoder, only: [:id, :active, :first_name, :last_name, :email, :phone, :role]}
 
   schema "users" do
     field :first_name, :string
@@ -15,11 +15,12 @@ defmodule TlcApp.Accounts.User do
     field :password_hash, :string
     field :role, :string, default: @student
     field :email, :string
+    field :active, :boolean, default: true
 
     timestamps()
   end
 
-  @fields [:email, :first_name, :last_name, :phone, :password, :role]
+  @fields [:email, :first_name, :last_name, :phone, :password, :role, :active]
   @required_fields [:email, :first_name, :last_name, :phone]
 
   @doc false
