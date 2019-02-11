@@ -2,10 +2,12 @@ defmodule TlcApp.School.Course do
   use Ecto.Schema
   import Ecto.Changeset
 
+  @derive {Jason.Encoder, only: [:id, :name, :code, :schedules]}
 
   schema "courses" do
     field :name, :string
-    has_many :time_tables, TlcApp.School.Timetable
+    field :code, :string
+    has_many :schedules, TlcApp.School.Schedule
 
     timestamps()
   end
@@ -13,16 +15,26 @@ defmodule TlcApp.School.Course do
   @doc false
   def changeset(%__MODULE__{} = course, attrs) do
     course
-    |> cast(attrs, [:name])
-    |> validate_required([:name])
-    |> up_name_case
-    |> unique_constraint(:name)
+    |> cast(attrs, [:name, :code])
+    |> validate_required([:name, :code])
+    |> upcase_name
+    |> upcase_code
+    |> unique_constraint(:code)
   end
 
-  defp up_name_case(changeset) do
+  defp upcase_name(changeset) do
     case changeset do
       %Ecto.Changeset{valid?: true, changes: %{name: name}} ->
         put_change(changeset, :name, String.upcase(name))
+      _ ->
+        changeset
+    end
+  end
+
+  defp upcase_code(changeset) do
+    case changeset do
+      %Ecto.Changeset{valid?: true, changes: %{code: code}} ->
+        put_change(changeset, :code, String.upcase(code))
       _ ->
         changeset
     end

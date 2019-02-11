@@ -9,6 +9,6 @@ defmodule TlcApp.Web.UserView do
   def user_roles, do: ["Student": User.student_role(), "Staff": User.staff_role()]
 
   def courses, do: School.course_names_and_ids()
-  def streams, do: School.stream_names_and_ids()
-  def course_regs(user), do: School.list_course_regs(user.id) |> School.load_course |> School.load_stream
+  def streams, do: School.list_streams()
+  def course_regs(user), do: School.list_course_regs(user.id) |> School.load_course
 end

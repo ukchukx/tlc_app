@@ -7,11 +7,10 @@ defmodule TlcApp.School do
   alias TlcApp.Repo
 
   alias TlcApp.School.Course
-  alias TlcApp.School.Stream
   alias TlcApp.School.Setting
   alias TlcApp.School.Attendance
   alias TlcApp.School.CourseReg
-  alias TlcApp.School.Timetable
+  alias TlcApp.School.Schedule
 
   @doc """
   Returns the list of courses.
@@ -23,11 +22,11 @@ defmodule TlcApp.School do
 
   """
   def list_courses do
-    Repo.all(Course)
+    Course |> preload(:schedules) |> Repo.all
   end
 
   def course_names_and_ids do
-    Repo.all(from c in Course, select: {c.name, c.id})
+    Repo.all(from c in Course, select: {c.name, c.code, c.id})
   end
 
   @doc """
@@ -44,7 +43,17 @@ defmodule TlcApp.School do
       ** (Ecto.NoResultsError)
 
   """
-  def get_course!(id), do: Repo.get!(Course, id)
+  def get_course!(id), do: Course |> Repo.get!(id) |> Repo.preload(:schedules)
+
+  def get_course(id) do
+    Course
+    |> preload(:schedules)
+    |> Repo.get(id)
+    |> case do
+      %Course{} = c -> {:ok, c}
+      _ -> {:error, nil}
+    end
+  end
 
   @doc """
   Creates a course.
@@ -62,6 +71,10 @@ defmodule TlcApp.School do
     %Course{}
     |> Course.changeset(attrs)
     |> Repo.insert()
+    |> case do
+      {:ok, course} -> {:ok, Repo.preload(course, :schedules)}
+      other -> other
+    end
   end
 
   @doc """
@@ -80,6 +93,10 @@ defmodule TlcApp.School do
     course
     |> Course.changeset(attrs)
     |> Repo.update()
+    |> case do
+      {:ok, course} -> {:ok, Repo.preload(course, :schedules)}
+      other -> other
+    end
   end
 
   @doc """
@@ -111,104 +128,10 @@ defmodule TlcApp.School do
     Course.changeset(course, %{})
   end
 
-  @doc """
-  Returns the list of streams.
 
-  ## Examples
-
-      iex> list_streams()
-      [%Stream{}, ...]
-
-  """
   def list_streams do
-    Repo.all(Stream)
+    [%{id: 1, name: "Stream 1"}, %{id: 2, name: "Stream 2"}]
   end
-
-  def stream_names_and_ids do
-    Repo.all(from s in Stream, select: {s.name, s.id})
-  end
-
-  @doc """
-  Gets a single stream.
-
-  Raises `Ecto.NoResultsError` if the Stream does not exist.
-
-  ## Examples
-
-      iex> get_stream!(123)
-      %Stream{}
-
-      iex> get_stream!(456)
-      ** (Ecto.NoResultsError)
-
-  """
-  def get_stream!(id), do: Repo.get!(Stream, id)
-
-  @doc """
-  Creates a stream.
-
-  ## Examples
-
-      iex> create_stream(%{field: value})
-      {:ok, %Stream{}}
-
-      iex> create_stream(%{field: bad_value})
-      {:error, %Ecto.Changeset{}}
-
-  """
-  def create_stream(attrs \\ %{}) do
-    %Stream{}
-    |> Stream.changeset(attrs)
-    |> Repo.insert()
-  end
-
-  @doc """
-  Updates a stream.
-
-  ## Examples
-
-      iex> update_stream(stream, %{field: new_value})
-      {:ok, %Stream{}}
-
-      iex> update_stream(stream, %{field: bad_value})
-      {:error, %Ecto.Changeset{}}
-
-  """
-  def update_stream(%Stream{} = stream, attrs) do
-    stream
-    |> Stream.changeset(attrs)
-    |> Repo.update()
-  end
-
-  @doc """
-  Deletes a Stream.
-
-  ## Examples
-
-      iex> delete_stream(stream)
-      {:ok, %Stream{}}
-
-      iex> delete_stream(stream)
-      {:error, %Ecto.Changeset{}}
-
-  """
-  def delete_stream(%Stream{} = stream) do
-    Repo.delete(stream)
-  end
-
-  @doc """
-  Returns an `%Ecto.Changeset{}` for tracking stream changes.
-
-  ## Examples
-
-      iex> change_stream(stream)
-      %Ecto.Changeset{source: %Stream{}}
-
-  """
-  def change_stream(%Stream{} = stream) do
-    Stream.changeset(stream, %{})
-  end
-
 
   @doc """
   Returns the list of settings.
@@ -466,16 +389,17 @@ defmodule TlcApp.School do
   defp to_ts({{_,_,_},{_,_,_}}=datetime_tup), do:  :calendar.datetime_to_gregorian_seconds(datetime_tup) - 62167219200
 
   def get_ongoing_courses(student_id) do
-    {{y, m, d}, {h, min, _}} = :calendar.local_time()
-    today = Map.get(@days, :calendar.day_of_the_week(y, m, d))
-    regs = list_course_regs_for_current_diet(student_id)
+    :ok
+    # {{y, m, d}, {h, min, _}} = :calendar.local_time()
+    # today = Map.get(@days, :calendar.day_of_the_week(y, m, d))
+    # regs = list_course_regs_for_current_diet(student_id)
 
-    list_time_tables
-    |> Enum.filter(&(&1.day == today))
-    |> Enum.filter(fn entry -> Enum.any?(regs, &(entry.course_id == &1.id)) end)
-    |> Enum.filter(fn entry -> Enum.any?(regs, &(entry.stream_id == &1.stream_id)) end)
-    |> Enum.filter(&(time_between(&1.start_time, &1.end_time)))
-    |> Enum.map(&Repo.preload(&1, :course))
+    # list_time_tables
+    # |> Enum.filter(&(&1.day == today))
+    # |> Enum.filter(fn entry -> Enum.any?(regs, &(entry.course_id == &1.id)) end)
+    # |> Enum.filter(fn entry -> Enum.any?(regs, &(entry.stream_id == &1.stream_id)) end)
+    # |> Enum.filter(&(time_between(&1.start_time, &1.end_time)))
+    # |> Enum.map(&Repo.preload(&1, :course))
   end
 
   @doc """
@@ -560,107 +484,134 @@ defmodule TlcApp.School do
   ## Examples
 
       iex> list_time_tables()
-      [%Timetable{}, ...]
+      [%Schedule{}, ...]
 
   """
-  def list_time_tables do
-    Repo.all(Timetable)
+  def list_schedules do
+    Repo.all(Schedule)
   end
 
-  def list_time_tables(%{course: cid, stream: sid}) do
-    Repo.all(from t in Timetable, where: t.course_id == ^cid and t.stream_id == ^sid)
+  def list_schedules(%{course: cid, stream: s}) do
+    Repo.all(from t in Schedule, where: t.course_id == ^cid and t.stream == ^s)
   end
 
-  def list_time_tables(%{course: cid}) do
-    Repo.all(from t in Timetable, where: t.course_id == ^cid)
+  def list_schedules(%{course: cid}) do
+    Repo.all(from t in Schedule, where: t.course_id == ^cid)
   end
-
-  def load_stream(resources), do: resources |> Enum.map(&Repo.preload(&1, :stream))
 
   @doc """
-  Gets a single timetable.
+  Gets a single schedule.
 
-  Raises `Ecto.NoResultsError` if the Timetable does not exist.
+  Raises `Ecto.NoResultsError` if the Schedule does not exist.
+
+  """
+  def get_schedule!(id), do: Repo.get!(Schedule, id)
+
+  def get_schedule(id), do: Repo.get(Schedule, id)
+
+  @doc """
+  Creates a schedule.
 
   ## Examples
 
-      iex> get_timetable!(123)
-      %Timetable{}
+      iex> create_schedule(%{field: value})
+      {:ok, %Schedule{}}
 
-      iex> get_timetable!(456)
-      ** (Ecto.NoResultsError)
-
-  """
-  def get_timetable!(id), do: Repo.get!(Timetable, id)
-
-  @doc """
-  Creates a timetable.
-
-  ## Examples
-
-      iex> create_timetable(%{field: value})
-      {:ok, %Timetable{}}
-
-      iex> create_timetable(%{field: bad_value})
+      iex> create_schedule(%{field: bad_value})
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_timetable(attrs \\ %{}) do
-    %Timetable{}
-    |> Timetable.changeset(attrs)
+  def create_schedule(attrs \\ %{}) do
+    %Schedule{}
+    |> Schedule.changeset(attrs)
     |> Repo.insert()
   end
 
-  def create_timeperiod(attrs) do
-    %Timetable{}
-    |> Timetable.changeset(attrs)
-    |> Repo.insert()
+  def create_multiple_schedules(param_list) do
+    timestamp = fn ->
+      NaiveDateTime.utc_now()
+      |> NaiveDateTime.truncate(:second)
+    end
+
+    param_list
+    |> Stream.filter(fn %{"start_date" => start, "stream" => stream} ->
+      q = from s in Schedule, where: s.start_date == ^start and s.stream == ^stream
+      Repo.aggregate(q, :count, :id) == 0
+    end)
+    |> Stream.map(&(Schedule.changeset(%Schedule{}, &1)))
+    |> Enum.split_with(&(&1.valid?))
+    |> case do
+      {valid_changesets, []} ->
+        raw_data =
+          valid_changesets
+          |> Stream.map(&(Ecto.Changeset.apply_changes(&1))) # turns item changesets into a list of %Schedule{}
+          |> Enum.map(fn item -> # turns %Schedule{} into a map with only non-nil item values (no association or __meta__ structs)
+            item
+            |> Map.from_struct
+            |> Stream.reject(fn # or something similar
+              {_key, nil} -> true
+
+              {_key, %_struct{}} ->
+                # rejects __meta__: #Ecto.Schema.Metadata<:built, "schedules">
+                # and association: #Ecto.Association.NotLoaded<association :association is not loaded>
+                true
+
+              _ -> false
+            end)
+            |> Enum.into(%{inserted_at: timestamp.(), updated_at: timestamp.()}) # not really necessary since `insert_all` also accepts a list of lists.
+          end)
+          # maybe filter for empty maps/lists
+
+        Repo.insert_all(Schedule, raw_data)
+        :ok
+      {_, invalid_changesets} -> {:error, invalid_changesets}
+    end
   end
 
   @doc """
-  Updates a timetable.
+  Updates a schedule.
 
   ## Examples
 
-      iex> update_timetable(timetable, %{field: new_value})
-      {:ok, %Timetable{}}
+      iex> update_schedule(schedule, %{field: new_value})
+      {:ok, %Schedule{}}
 
-      iex> update_timetable(timetable, %{field: bad_value})
+      iex> update_schedule(schedule, %{field: bad_value})
       {:error, %Ecto.Changeset{}}
 
   """
-  def update_timetable(%Timetable{} = timetable, attrs) do
-    timetable
-    |> Timetable.changeset(attrs)
+  def update_schedule(%Schedule{} = schedule, attrs) do
+    schedule
+    |> Schedule.changeset(attrs)
     |> Repo.update()
   end
 
   @doc """
-  Deletes a Timetable.
+  Deletes a Schedule.
 
   ## Examples
 
-      iex> delete_timetable(timetable)
-      {:ok, %Timetable{}}
+      iex> delete_schedule(schedule)
+      {:ok, %Schedule{}}
 
-      iex> delete_timetable(timetable)
+      iex> delete_schedule(schedule)
       {:error, %Ecto.Changeset{}}
 
   """
-  def delete_timetable(%Timetable{} = timetable) do
-    Repo.delete(timetable)
+  def delete_schedule(%Schedule{} = schedule) do
+    Repo.delete(schedule)
   end
 
   @doc """
-  Returns an `%Ecto.Changeset{}` for tracking timetable changes.
+  Returns an `%Ecto.Changeset{}` for tracking schedule changes.
 
   ## Examples
 
-      iex> change_timetable(timetable)
-      %Ecto.Changeset{source: %Timetable{}}
+      iex> change_schedule(schedule)
+      %Ecto.Changeset{source: %Schedule{}}
 
   """
-  def change_timetable(%Timetable{} = timetable, attrs \\ %{}) do
-    Timetable.changeset(timetable, attrs)
+  def change_schedule(%Schedule{} = schedule, attrs \\ %{}) do
+    Schedule.changeset(schedule, attrs)
   end
 end

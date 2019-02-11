@@ -4,7 +4,7 @@ defmodule TlcApp.Repo.Migrations.CreateAttendances do
   def change do
     create table(:attendances) do
       add :user_id, references(:users, on_delete: :nothing)
-      add :time_table_id, references(:time_tables, on_delete: :nothing)
+      add :schedule_id, references(:schedules, on_delete: :nothing)
 
       timestamps()
     end

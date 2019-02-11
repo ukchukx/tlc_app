@@ -52,18 +52,6 @@ defmodule TlcApp.Accounts do
   def find_user(%{"email" => email, "phone" => phone}=_attrs), do: Repo.one(from u in User,
         where: u.email == ^email or u.phone == ^phone)
 
-  @doc """
-  Creates a user.
-
-  ## Examples
-
-      iex> create_user(%{field: value})
-      {:ok, %User{}}
-
-      iex> create_user(%{field: bad_value})
-      {:error, %Ecto.Changeset{}}
-
-  """
   defp create_user(attrs) do
     case find_user(attrs) do
       nil ->

@@ -18,9 +18,6 @@ defmodule TlcApp.Web.Router do
     pipe_through :browser
 
     get "/", PageController, :index
-    post "/sign-attendance", PageController, :sign_attendance
-
-    resources "/users", UserController, only: [:edit, :update]
 
     get "/signin", SessionController, :signin
     post "/signin", SessionController, :create_session
@@ -28,10 +25,14 @@ defmodule TlcApp.Web.Router do
 
     get "/bo", PageController, :bo_index
 
-    resources "/bo/courses", CourseController
-    post "/bo/courses/upload-timetable", CourseController, :upload_timetable
+    resources "/bo/courses", CourseController, only: [:index, :create, :update, :delete, :show]
+    post "/bo/courses/:id/schedules", CourseController, :create_schedules
+    delete "/bo/schedules/:id", CourseController, :delete_schedule
 
-    resources "/bo/streams", StreamController, except: [:show]
+
+    post "/sign-attendance", PageController, :sign_attendance
+
+    resources "/users", UserController, only: [:edit, :update]
 
     get "/bo/attendances/download", AttendanceController, :download
 

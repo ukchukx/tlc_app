@@ -1,5 +1,6 @@
 const mix = require('laravel-mix');
 const path = require('path');
+const MomentLocalesPlugin = require('moment-locales-webpack-plugin');
 
 /*
  |--------------------------------------------------------------------------
@@ -28,7 +29,11 @@ mix.setPublicPath('../priv/static')
           'js'
         )
       }
-    }
+    },
+    plugins: [
+      // strip all locales except “en”
+      new MomentLocalesPlugin()
+    ]
   })
   .options({
     clearConsole: false,
