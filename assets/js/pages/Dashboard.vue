@@ -1,5 +1,5 @@
 <template>
-  <StaffPage :user="user" title="Dashboard">
+  <StaffPage :user="user" title="Dashboard" current-route="dashboard">
 
   </StaffPage>
 </template>

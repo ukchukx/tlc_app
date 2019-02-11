@@ -1,6 +1,6 @@
 <template>
   <div id="wrapper">
-    <Sidebar />
+    <Sidebar :current-route="currentRoute" />
     <div id="content-wrapper" class="d-flex flex-column">
       <div id="content">
         <TopBar :user="user" />
@@ -26,6 +26,6 @@ export default {
     Sidebar,
     Footer
   },
-  props: ['user', 'title']
+  props: ['user', 'title', 'currentRoute']
 };
 </script>

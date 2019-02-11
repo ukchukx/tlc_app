@@ -36,7 +36,9 @@
                 <td>{{ s | scheduleStart }}</td>
                 <td>{{ s | scheduleEnd }}</td>
                 <td>
-                  <button @click="deleteSchedule(s)" class="btn btn-sm btn-outline-danger">Delete</button>
+                  <button @click="deleteSchedule(s)" class="btn btn-sm btn-outline-danger">
+                    <fa-icon icon="trash" />
+                  </button>
                 </td>
               </tr>
             </tbody>

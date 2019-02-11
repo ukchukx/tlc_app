@@ -1,5 +1,5 @@
 <template>
-  <StaffPage :user="user" title="Courses">
+  <StaffPage :user="user" title="Courses" current-route="courses">
     <div class="row">
       <div class="col text-center mx-auto">
         <flash-message />
@@ -29,9 +29,15 @@
                 <td>{{ course.code }}</td>
                 <td>{{ course.name }}</td>
                 <td>
-                  <a :href="courseUrl(course)" class="btn btn-sm btn-link">Schedules</a>
-                  <button @click="editCourse(course)" class="btn btn-sm btn-outline-primary">Edit</button>
-                  <button @click="deleteCourse(course)" class="btn btn-sm btn-outline-danger">Delete</button>
+                  <a :href="courseUrl(course)" class="btn btn-sm btn-link">
+                    <fa-icon icon="arrow-right" /> Schedules
+                  </a>
+                  <button @click="editCourse(course)" class="btn btn-sm btn-outline-primary">
+                    <fa-icon icon="pen" />
+                  </button>
+                  <button @click="deleteCourse(course)" class="btn btn-sm btn-outline-danger">
+                    <fa-icon icon="trash" />
+                  </button>
                 </td>
               </tr>
             </tbody>

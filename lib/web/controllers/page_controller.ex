@@ -5,7 +5,7 @@ defmodule TlcApp.Web.PageController do
     render conn, "bo_index.html", user: user
   end
 
-  def index(%{assigns: %{current_user: %{}}} = conn, _params) do
+  def index(%{assigns: %{current_user: %{role: "student"}}} = conn, _params) do
     render(conn, "index.html")
   end
 

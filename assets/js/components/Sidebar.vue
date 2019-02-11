@@ -13,7 +13,7 @@
     <hr class="sidebar-divider my-0">
 
     <!-- Nav Item - Dashboard -->
-    <li class="nav-item">
+    <li :class="getClasses('dashboard')">
       <a class="nav-link" href="/">
         <fa-icon icon="tachometer-alt"/>
         <span>Dashboard</span></a>
@@ -21,16 +21,16 @@
 
 
     <!-- Nav Item - Charts -->
-    <li class="nav-item">
+    <li :class="getClasses('courses')">
       <a class="nav-link" href="/bo/courses">
-        <fa-icon icon="chart-area"/>
+        <fa-icon icon="file"/>
         <span>Courses</span></a>
     </li>
 
     <!-- Nav Item - Tables -->
-    <li class="nav-item">
+    <li :class="getClasses('tables')">
       <a class="nav-link" href="tables.html">
-        <fa-icon icon="table" />
+        <fa-icon icon="file" />
         <span>Tables</span></a>
     </li>
 
@@ -48,6 +48,16 @@
 
 <script>
 export default {
-  name: 'Sidebar'
+  name: 'Sidebar',
+  props: {
+    currentRoute: {
+      default: ''
+    }
+  },
+  methods: {
+    getClasses(route) {
+      return route === this.currentRoute ? 'nav-item active' : 'nav-item';
+    }
+  }
 }
 </script>
