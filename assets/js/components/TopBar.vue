@@ -1,22 +1,34 @@
 <template>
-  <b-navbar sticky toggleable="md">
-    <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
+  <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+    <!-- Sidebar Toggle (Topbar) -->
+    <button id="sidebarToggleTop" class="btn btn-link rounded-circle mr-3">
+      <fa-icon icon="bars" />
+    </button>
 
-    <b-navbar-brand href="/">X</b-navbar-brand>
+    <!-- Topbar Navbar -->
+    <ul class="navbar-nav ml-auto">
+      <div class="topbar-divider d-none d-sm-block"></div>
 
-    <b-collapse is-nav id="nav_collapse">
-      <!-- Right aligned nav items -->
-      <b-navbar-nav class="ml-auto">
-        <b-nav-item-dropdown right>
-          <template slot="button-content">
-          <span> <fa-icon icon="user" /> {{ user.first_name }}</span>
-        </template>
-          <b-dropdown-item href="/signout">Signout</b-dropdown-item>
-        </b-nav-item-dropdown>
-      </b-navbar-nav>
-
-    </b-collapse>
-  </b-navbar>
+      <!-- Nav Item - User Information -->
+      <li class="nav-item dropdown no-arrow">
+        <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <span class="mr-2 text-gray-600 small">{{ user.first_name }} {{ user.last_name }}</span>
+        </a>
+        <!-- Dropdown - User Information -->
+        <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+          <a class="dropdown-item" href="#">
+            <fa-icon icon="user" class="fa-sm fa-fw mr-2 text-gray-400" />
+            Profile
+          </a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="/signout">
+            <fa-icon icon="sign-out-alt" class="fa-sm fa-fw mr-2 text-gray-400" />
+            Logout
+          </a>
+        </div>
+      </li>
+    </ul>
+  </nav>
 </template>
 
 <script>

@@ -1,13 +1,6 @@
 <template>
-  <StaffPage :user="user">
-    <div class="card mb3">
-      <div class="card-header">
-        Dashboard
-      </div>
-      <div class="card-body">
-        Welcome
-      </div>
-    </div>
+  <StaffPage :user="user" title="Dashboard">
+
   </StaffPage>
 </template>
 

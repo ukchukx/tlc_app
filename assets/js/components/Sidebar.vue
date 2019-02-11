@@ -1,31 +1,48 @@
 <template>
-  <ul class="sidebar navbar-nav">
+  <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+
+    <!-- Sidebar - Brand -->
+    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/">
+      <div class="sidebar-brand-icon rotate-n-15">
+        <fa-icon icon="laugh-wink" />
+      </div>
+      <div class="sidebar-brand-text mx-3">TLC App</div>
+    </a>
+
+    <!-- Divider -->
+    <hr class="sidebar-divider my-0">
+
+    <!-- Nav Item - Dashboard -->
     <li class="nav-item">
       <a class="nav-link" href="/">
-        <i class="fas fa-fw fa-tachometer-alt"></i>
-        <span>Dashboard</span>
-      </a>
+        <fa-icon icon="tachometer-alt"/>
+        <span>Dashboard</span></a>
     </li>
+
+
+    <!-- Nav Item - Charts -->
     <li class="nav-item">
       <a class="nav-link" href="/bo/courses">
-        <i class="fas fa-fw fa-chart-area"></i>
+        <fa-icon icon="chart-area"/>
         <span>Courses</span></a>
     </li>
+
+    <!-- Nav Item - Tables -->
     <li class="nav-item">
-      <a class="nav-link" href="/bo/settings">
-        <i class="fas fa-fw fa-table"></i>
-        <span>Settings</span></a>
+      <a class="nav-link" href="tables.html">
+        <fa-icon icon="table" />
+        <span>Tables</span></a>
     </li>
-    <li class="nav-item">
-      <a class="nav-link" href="/bo/attendance">
-        <i class="fas fa-fw fa-table"></i>
-        <span>Attendance</span></a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="/bo/users">
-        <i class="fas fa-fw fa-table"></i>
-        <span>Users</span></a>
-    </li>
+
+    <!-- Divider -->
+    <hr class="sidebar-divider d-none d-md-block">
+
+    <!-- Sidebar Toggler (Sidebar) -->
+    <div class="text-center d-none d-md-inline">
+      <button class="rounded-circle border-0" id="sidebarToggle">
+      </button>
+    </div>
+
   </ul>
 </template>
 

@@ -7,11 +7,13 @@ import { library } from '@fortawesome/fontawesome-svg-core';
 import { fas } from '@fortawesome/free-solid-svg-icons';
 import { far } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+window.jQuery = window.$ = require('jquery');
 
 // Import local files
 // import socket from "./socket"
 import Dashboard from '@/pages/Dashboard';
 import Login from '@/pages/Login';
+import Courses from '@/pages/Courses';
 
 Vue.config.productionTip = false;
 
@@ -26,6 +28,7 @@ Vue.use(BootstrapVue);
 Vue.use(VueFlashMessage, { createShortcuts: false });
 Vue.component(Dashboard.name, Dashboard);
 Vue.component(Login.name, Login);
+Vue.component(Courses.name, Courses);
 
 new Vue({
   el: '#app'

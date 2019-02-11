@@ -13,6 +13,8 @@ const path = require('path');
  */
 mix.setPublicPath('../priv/static')
   .js('js/app.js', 'js/app.js')
+  .js('js/sb-admin-2.min.js', 'js/sb-admin-2.min.js')
+  .js('js/bootstrap.bundle.min.js', 'js/bootstrap.bundle.min.js')
   .extract(Object.keys(require('./package.json').dependencies))
   .sass('css/app.scss', 'css/app.css')
   .version()
