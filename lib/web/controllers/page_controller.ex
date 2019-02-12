@@ -15,8 +15,11 @@ defmodule TlcApp.Web.PageController do
       staff_count: staff_count
   end
 
-  def index(%{assigns: %{current_user: %{role: "student"}}} = conn, _) do
-    render(conn, "index.html")
+  def index(%{assigns: %{current_user: %{role: "student", id: id} = user}} = conn, _) do
+    render conn, "index.html",
+      user: user,
+      course_regs: School.list_course_regs_for_current_diet(id),
+      courses: School.list_courses()
   end
 
   def index(conn, params), do:  catch_all(conn, params)

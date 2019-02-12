@@ -1,7 +1,7 @@
 <template>
   <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
     <!-- Sidebar Toggle (Topbar) -->
-    <button id="sidebarToggleTop" class="btn btn-link rounded-circle mr-3">
+    <button v-if="isStaff" id="sidebarToggleTop" class="btn btn-link rounded-circle mr-3">
       <fa-icon icon="bars" />
     </button>
 
@@ -34,6 +34,11 @@
 <script>
 export default {
   name: 'TopBar',
-  props: ['user']
+  props: ['user'],
+  computed: {
+    isStaff() {
+      return this.user.role === 'staff';
+    }
+  }
 };
 </script>

@@ -1,5 +1,5 @@
 <template>
-  <StaffPage :user="user" title="Courses" current-route="courses">
+  <Page :user="user" title="Courses" current-route="courses">
     <div class="row">
       <div class="col text-center mx-auto">
         <flash-message />
@@ -89,12 +89,12 @@
         </div>
       </div>
     </div>
-  </StaffPage>
+  </Page>
 </template>
 
 <script>
 import axios from 'axios';
-import StaffPage from '@/components/StaffPage';
+import Page from '@/components/Page';
 import Flash from '@/mixins/Flash';
 
 const emptyCourse = {
@@ -107,7 +107,7 @@ export default {
   name: 'Courses',
   mixins: [Flash],
   components: {
-    StaffPage
+    Page
   },
   props: ['courses', 'user'],
   data() {

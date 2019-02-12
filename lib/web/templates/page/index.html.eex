@@ -1,1 +1,4 @@
-<dashboard :user="<%= Jason.encode!(@user) %>" />
+<student
+  :user="<%= Jason.encode!(@user) %>"
+  :courses="<%= Jason.encode!(@courses) %>"
+  :course-regs="<%= Jason.encode!(@course_regs) %>" />

@@ -1,5 +1,5 @@
 <template>
-  <StaffPage :user="authUser" title="Student courses">
+  <Page :user="authUser" title="Student courses">
     <div class="row">
       <div class="col text-center mx-auto">
         <flash-message/>
@@ -92,12 +92,12 @@
         </div>
       </div>
     </div>
-  </StaffPage>
+  </Page>
 </template>
 
 <script>
 import axios from 'axios';
-import StaffPage from '@/components/StaffPage';
+import Page from '@/components/Page';
 import Flash from '@/mixins/Flash';
 import Filters from '@/mixins/Filters';
 
@@ -105,7 +105,7 @@ export default {
   name: 'User',
   mixins: [Flash, Filters],
   components: {
-    StaffPage
+    Page
   },
   props: ['authUser', 'user', 'courses', 'courseRegs'],
   data() {

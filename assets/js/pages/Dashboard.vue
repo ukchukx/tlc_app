@@ -1,5 +1,5 @@
 <template>
-  <StaffPage :user="user" title="Dashboard" current-route="dashboard">
+  <Page :user="user" title="Dashboard" current-route="dashboard">
     <div class="row">
       <div class="col-xl-3 col-md-6 mb-4">
         <div class="card border-left-primary shadow h-100 py-2">
@@ -47,16 +47,16 @@
         </div>
       </div>
     </div>
-  </StaffPage>
+  </Page>
 </template>
 
 <script>
-import StaffPage from '@/components/StaffPage';
+import Page from '@/components/Page';
 
 export default {
   name: 'Dashboard',
   components: {
-    StaffPage
+    Page
   },
   props: ['user', 'courseCount', 'activeStudentCount', 'staffCount']
 }

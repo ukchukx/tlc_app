@@ -1,5 +1,5 @@
 <template>
-  <StaffPage :user="authUser" title="Users" current-route="users">
+  <Page :user="authUser" title="Users" current-route="users">
     <div class="row">
       <div class="col text-center mx-auto">
         <flash-message />
@@ -135,13 +135,13 @@
         </div>
       </div>
     </div>
-  </StaffPage>
+  </Page>
 </template>
 
 <script>
 import axios from 'axios';
 import XLSX from 'xlsx';
-import StaffPage from '@/components/StaffPage';
+import Page from '@/components/Page';
 import Flash from '@/mixins/Flash';
 
 const emptyUser = {
@@ -157,7 +157,7 @@ export default {
   name: 'Users',
   mixins: [Flash],
   components: {
-    StaffPage
+    Page
   },
   props: ['users', 'authUser'],
   data() {

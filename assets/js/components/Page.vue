@@ -1,12 +1,12 @@
 <template>
   <div id="wrapper">
-    <Sidebar :current-route="currentRoute" />
+    <Sidebar :current-route="currentRoute" v-if="isStaff" />
     <div id="content-wrapper" class="d-flex flex-column">
       <div id="content">
         <TopBar :user="user" />
 
         <div class="container-fluid">
-          <h1 class="h3 mb-4 text-gray-800">{{ title }}</h1>
+          <h1 v-if="isStaff" class="h3 mb-4 text-gray-800">{{ title }}</h1>
           <slot />
         </div>
       </div>
@@ -20,12 +20,17 @@ import Footer from '@/components/Footer';
 import Sidebar from '@/components/Sidebar';
 
 export default {
-  name: 'StaffPage',
+  name: 'Page',
   components: {
     TopBar,
     Sidebar,
     Footer
   },
-  props: ['user', 'title', 'currentRoute']
+  props: ['user', 'title', 'currentRoute'],
+  computed: {
+    isStaff() {
+      return this.user.role === 'staff';
+    }
+  }
 };
 </script>
