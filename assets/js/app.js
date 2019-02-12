@@ -16,6 +16,8 @@ import Dashboard from '@/pages/Dashboard';
 import Login from '@/pages/Login';
 import Courses from '@/pages/Courses';
 import Course from '@/pages/Course';
+import Users from '@/pages/Users';
+import User from '@/pages/User';
 
 Vue.config.productionTip = false;
 
@@ -33,6 +35,8 @@ Vue.component(Dashboard.name, Dashboard);
 Vue.component(Login.name, Login);
 Vue.component(Courses.name, Courses);
 Vue.component(Course.name, Course);
+Vue.component(Users.name, Users);
+Vue.component(User.name, User);
 
 new Vue({
   el: '#app'

@@ -44,7 +44,8 @@ defmodule TlcApp.MixProject do
       {:jason, "~> 1.0"},
       {:comeonin, "~> 4.1"},
       {:bcrypt_elixir, "~> 1.1"},
-      {:plug_cowboy, "~> 2.0"}
+      {:plug_cowboy, "~> 2.0"},
+      {:elixlsx, "~> 0.4.1"}
     ]
   end
 

@@ -190,6 +190,8 @@ export default {
       this.showModal();
     },
     deleteCourse(course) {
+      if (!confirm('Are you sure?')) return;
+
       axios
         .delete(`/bo/courses/${course.id}`)
         .then(({ data: { success } }) => {
@@ -206,11 +208,9 @@ export default {
         });
     },
     showModal() {
-      this.modalOpen = true;
       $(this.$refs.modal).modal({ backdrop: 'static', keyboard: false });
     },
     closeModal() {
-      this.modalOpen = false;
       $(this.$refs.modal).modal('hide');
     }
   }

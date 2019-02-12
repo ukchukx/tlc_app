@@ -53,7 +53,8 @@ defmodule TlcApp.Accounts do
   """
   def get_user!(id), do: Repo.get!(User, id)
   def get_user(id), do: Repo.get(User, id)
-  def find_user(%{"email" => email, "phone" => phone}=_attrs), do: Repo.one(from u in User,
+
+  def find_user(%{"email" => email, "phone" => phone} = _), do: Repo.one(from u in User,
         where: u.email == ^email or u.phone == ^phone)
 
   defp create_user(attrs) do
@@ -112,15 +113,15 @@ defmodule TlcApp.Accounts do
 
   """
   def update_user(%User{} = user, attrs) do
-    user
-    |> User.changeset(attrs)
-    |> Repo.update()
-  end
+    changeset_func =
+      case Map.has_key?(attrs, "password") do
+        true -> &User.registration_changeset/2
+        false -> &User.changeset/2
+      end
 
-  def update_with_password(%User{} = user, attrs) do
     user
-    |> User.registration_changeset(attrs)
-    |> Repo.update()
+    |> changeset_func.(attrs)
+    |> Repo.update
   end
 
   @doc """

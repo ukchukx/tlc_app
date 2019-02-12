@@ -1,0 +1,1 @@
+<users :users="<%= Jason.encode!(@users) %>" :auth-user="<%= Jason.encode!(@user) %>" />

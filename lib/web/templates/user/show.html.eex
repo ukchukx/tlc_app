@@ -1,0 +1,5 @@
+<user
+  :auth-user="<%= Jason.encode!(@auth_user) %>"
+  :course-regs="<%= Jason.encode!(@course_regs) %>"
+  :courses="<%= Jason.encode!(@courses) %>"
+  :user="<%= Jason.encode!(@user) %>" />

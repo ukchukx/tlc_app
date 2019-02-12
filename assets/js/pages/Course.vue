@@ -179,11 +179,15 @@ export default {
   components: {
     StaffPage
   },
-  props: ['course', 'user', 'streams'],
+  props: ['course', 'user'],
   data() {
     const now = new Date();
 
     return {
+      streams: [
+        { id: 1, name: 'Stream 1'},
+        { id: 2, name: 'Stream 2' }
+      ],
       localSchedules: this.course.schedules,
       minDate: now.toISOString(),
       startDate: now.toISOString(),

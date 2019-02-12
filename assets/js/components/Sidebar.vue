@@ -19,15 +19,18 @@
         <span>Dashboard</span></a>
     </li>
 
-
-    <!-- Nav Item - Charts -->
     <li :class="getClasses('courses')">
       <a class="nav-link" href="/bo/courses">
         <fa-icon icon="file"/>
         <span>Courses</span></a>
     </li>
 
-    <!-- Nav Item - Tables -->
+    <li :class="getClasses('users')">
+      <a class="nav-link" href="/bo/users">
+        <fa-icon icon="file"/>
+        <span>Users</span></a>
+    </li>
+
     <li :class="getClasses('tables')">
       <a class="nav-link" href="tables.html">
         <fa-icon icon="file" />

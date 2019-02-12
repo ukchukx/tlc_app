@@ -16,6 +16,10 @@ export default {
     streamName({ stream }, streams) {
       const obj = streams.find(({ id }) => stream === id);
       return obj ? obj.name : stream;
+    },
+    courseName(id, courses) {
+      const obj = courses.find(c => id === c.id);
+      return obj ? `${obj.name} (${obj.code})` : course_id;
     }
   }
 };

@@ -2,14 +2,16 @@ defmodule TlcApp.School.CourseReg do
   use Ecto.Schema
   import Ecto.Changeset
 
-  @fields [:diet, :user_id, :course_id, :stream_id]
+  @derive {Jason.Encoder, only: [:id, :diet, :user_id, :course_id, :stream]}
+
+  @fields [:diet, :user_id, :course_id, :stream]
 
   schema "course_regs" do
     field :diet, :string
+    field :stream, :integer
 
     belongs_to :user, TlcApp.Accounts.User
     belongs_to :course, TlcApp.School.Course
-    belongs_to :stream, TlcApp.School.Stream
 
     timestamps()
   end

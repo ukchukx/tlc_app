@@ -7,7 +7,6 @@ defmodule TlcApp.School do
   alias TlcApp.Repo
 
   alias TlcApp.School.Course
-  alias TlcApp.School.Setting
   alias TlcApp.School.Attendance
   alias TlcApp.School.CourseReg
   alias TlcApp.School.Schedule
@@ -134,101 +133,6 @@ defmodule TlcApp.School do
   end
 
   @doc """
-  Returns the list of settings.
-
-  ## Examples
-
-      iex> list_settings()
-      [%Setting{}, ...]
-
-  """
-  def list_settings do
-    Repo.all(Setting)
-  end
-
-  @doc """
-  Gets a single setting.
-
-  Raises `Ecto.NoResultsError` if the Setting does not exist.
-
-  ## Examples
-
-      iex> get_setting!(123)
-      %Setting{}
-
-      iex> get_setting!(456)
-      ** (Ecto.NoResultsError)
-
-  """
-  def get_setting!(id), do: Repo.get!(Setting, id)
-  def get_setting(name: name), do: Repo.get_by(Setting, name: name)
-
-  @doc """
-  Creates a setting.
-
-  ## Examples
-
-      iex> create_setting(%{field: value})
-      {:ok, %Setting{}}
-
-      iex> create_setting(%{field: bad_value})
-      {:error, %Ecto.Changeset{}}
-
-  """
-  def create_setting(attrs \\ %{}) do
-    %Setting{}
-    |> Setting.changeset(attrs)
-    |> Repo.insert()
-  end
-
-  @doc """
-  Updates a setting.
-
-  ## Examples
-
-      iex> update_setting(setting, %{field: new_value})
-      {:ok, %Setting{}}
-
-      iex> update_setting(setting, %{field: bad_value})
-      {:error, %Ecto.Changeset{}}
-
-  """
-  def update_setting(%Setting{} = setting, attrs) do
-    setting
-    |> Setting.changeset(attrs)
-    |> Repo.update()
-  end
-
-  @doc """
-  Deletes a Setting.
-
-  ## Examples
-
-      iex> delete_setting(setting)
-      {:ok, %Setting{}}
-
-      iex> delete_setting(setting)
-      {:error, %Ecto.Changeset{}}
-
-  """
-  def delete_setting(%Setting{} = setting) do
-    Repo.delete(setting)
-  end
-
-  @doc """
-  Returns an `%Ecto.Changeset{}` for tracking setting changes.
-
-  ## Examples
-
-      iex> change_setting(setting)
-      %Ecto.Changeset{source: %Setting{}}
-
-  """
-  def change_setting(%Setting{} = setting) do
-    Setting.changeset(setting, %{})
-  end
-
-  @doc """
   Returns the list of attendances.
 
   ## Examples
@@ -349,9 +253,21 @@ defmodule TlcApp.School do
     Repo.all(from c in CourseReg, where: c.user_id == ^user_id)
   end
 
+  def current_diet do
+    today = DateTime.utc_now()
+    month =
+      case today.month > 5 do
+        true -> "November"
+        false -> "May"
+      end
+
+    "#{month}, #{today.year}"
+  end
+
   def list_course_regs_for_current_diet(user_id) do
-    %Setting{value: curr_diet} = get_setting(name: Setting.key(:current_diet))
-    Repo.all(from c in CourseReg, where: c.user_id == ^user_id and c.diet == ^curr_diet)
+
+
+    Repo.all(from c in CourseReg, where: c.user_id == ^user_id and c.diet == ^current_diet())
   end
 
   def load_course(resources), do: resources |> Enum.map(&Repo.preload(&1, :course))
@@ -414,16 +330,15 @@ defmodule TlcApp.School do
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_course_reg(%{"course_id" => cid, "stream_id" => sid, "user_id" => uid}=attrs) do
-    curr_diet = Repo.get_by!(Setting, name: "curr_diet")
-    attrs = Map.put(attrs, "diet", curr_diet.value)
+  def create_course_reg(%{"course_id" => cid, "stream" => s, "user_id" => uid, "diet" => d}=attrs) do
+    query = from c in CourseReg, where: c.diet == ^d and c.course_id == ^cid and c.stream == ^s and c.user_id == ^uid
 
-    cr = Repo.one(from c in CourseReg, where: c.diet == ^curr_diet.value and c.course_id == ^cid and
-                  c.stream_id == ^sid and c.user_id == ^uid)
-
-    case cr do
-      %CourseReg{} ->
+    query
+    |> Repo.one
+    |> case do
+      %CourseReg{} = cr ->
         {:ok, cr}
+
       _ ->
         %CourseReg{}
         |> CourseReg.changeset(attrs)

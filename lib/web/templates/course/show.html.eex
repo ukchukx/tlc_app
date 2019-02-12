@@ -1,4 +1,3 @@
 <course
-  :streams="<%= streams() |> Jason.encode! %>"
   :course="<%= Jason.encode!(@course) %>"
   :user="<%= Jason.encode!(@user) %>" />
