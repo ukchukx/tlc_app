@@ -182,8 +182,11 @@ export default {
   props: ['course', 'user'],
   data() {
     const now = new Date();
+    const month = now.getMonth() <= 4 ? 'May' : 'November';
+    const currentDiet = `${month}, ${now.getFullYear()}`;
 
     return {
+      currentDiet,
       streams: [
         { id: 1, name: 'Stream 1'},
         { id: 2, name: 'Stream 2' }
@@ -209,7 +212,7 @@ export default {
       typeOptions: [
         { text: 'Single', value: 'Single' },
         { text: 'Range', value: 'Range' }
-      ],
+      ]
     };
   },
   computed: {
@@ -255,7 +258,8 @@ export default {
           start_date: startTime.getTime(),
           end_date: endTime.getTime(),
           course_id: this.course.id,
-          stream: this.stream
+          stream: this.stream,
+          diet: this.currentDiet
         };
       });
 

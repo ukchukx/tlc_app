@@ -31,10 +31,10 @@
         <span>Users</span></a>
     </li>
 
-    <li :class="getClasses('tables')">
-      <a class="nav-link" href="tables.html">
+    <li :class="getClasses('attendance')">
+      <a class="nav-link" href="/bo/attendance">
         <fa-icon icon="file" />
-        <span>Tables</span></a>
+        <span>Attendance</span></a>
     </li>
 
     <!-- Divider -->

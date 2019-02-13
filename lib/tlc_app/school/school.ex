@@ -145,6 +145,14 @@ defmodule TlcApp.School do
     Repo.all(Attendance)
   end
 
+  def list_attendances_for_schedule(id) do
+    query = from a in Attendance, where: a.schedule_id == ^id, order_by: [asc: a.inserted_at]
+
+    query
+    |> Repo.all
+    |> Repo.preload(:user)
+  end
+
   @doc """
   Gets a single attendance.
 
@@ -294,6 +302,12 @@ defmodule TlcApp.School do
     query
     |> Repo.all
     |> Enum.filter(fn %{id: id} -> ! have_signed_today(student_id, id) end)
+  end
+
+  def get_past_schedules_for_current_diet do
+    now = DateTime.utc_now() |> DateTime.to_unix(:millisecond)
+    query = from s in Schedule, where: s.end_date < ^now and s.diet == ^current_diet()
+    Repo.all(query)
   end
 
   @doc """

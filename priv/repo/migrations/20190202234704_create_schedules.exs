@@ -6,6 +6,7 @@ defmodule TlcApp.Repo.Migrations.CreateTimeTables do
       add :start_date, :bigint
       add :end_date, :bigint
       add :stream, :smallint
+      add :diet, :string
       add :course_id, references(:courses, on_delete: :nothing)
 
       timestamps()

@@ -33,7 +33,8 @@ defmodule TlcApp.Web.Router do
 
     post "/sign-attendance", UserController, :sign_attendance
 
-    get "/bo/attendances/download", AttendanceController, :download
+    get "/bo/attendance", AttendanceController, :index
+    get "/bo/attendance/download/:id", AttendanceController, :download
 
     get "/*path", PageController, :catch_all
   end

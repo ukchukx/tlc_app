@@ -19,6 +19,7 @@ import Course from '@/pages/Course';
 import Users from '@/pages/Users';
 import User from '@/pages/User';
 import Student from '@/pages/Student';
+import Attendance from '@/pages/Attendance';
 
 Vue.config.productionTip = false;
 
@@ -39,6 +40,7 @@ Vue.component(Course.name, Course);
 Vue.component(Users.name, Users);
 Vue.component(User.name, User);
 Vue.component(Student.name, Student);
+Vue.component(Attendance.name, Attendance);
 
 new Vue({
   el: '#app'

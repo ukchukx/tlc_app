@@ -48,7 +48,8 @@ defmodule TlcApp.Web.UserController do
           user: user,
           auth_user: auth_user,
           courses: School.list_courses(),
-          course_regs: School.list_course_regs_for_current_diet(id)
+          course_regs: School.list_course_regs_for_current_diet(id),
+          title: "#{user.first_name} #{user.last_name} (#{user.email})"
       _ ->
         redirect(conn, to: Routes.user_path(conn, :index))
     end
