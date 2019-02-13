@@ -1,0 +1,7 @@
+_build
+.semaphore
+assets/node_modules
+deps
+logs
+test
+.elixir_ls

@@ -27,7 +27,7 @@ defmodule TlcApp.Application do
           # Run migrations
           Logger.info "Running migrations..."
           path = Application.app_dir(:tlc_app, "priv/repo/migrations")
-          Ecto.Migrator.run(Repo, path, :up, all: true)
+          Ecto.Migrator.run(TlcApp.Repo, path, :up, all: true)
         end
 
         TlcApp.Accounts.create_first_user()

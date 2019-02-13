@@ -1,0 +1,60 @@
+version: v1.0
+name: TLC app pipeline
+agent:
+  machine:
+    type: e1-standard-2
+    os_image: ubuntu1804
+
+blocks:
+  - name: Check master
+    task:
+      jobs:
+        - name: check master
+          commands:
+            - if [ "$SEMAPHORE_GIT_BRANCH" != "master" ]; then false; fi
+            - echo 'Master branch received'
+
+  - name: Install dependencies
+    task:
+      env_vars:
+        - name: MIX_ENV
+          value: prod
+      jobs:
+        - name: mix and cache
+          commands:
+            - sudo apt-get update && sudo apt-get install -y libpq-dev
+            - checkout
+            # Be sure to use --force to skip confirmation prompts
+            - mix local.hex --force
+            - mix local.rebar --force
+            - cache restore mix-deps-$SEMAPHORE_GIT_BRANCH-$(checksum mix.lock),mix-deps-$SEMAPHORE_GIT_BRANCH,mix-deps-master
+            - cache restore mix-build-$SEMAPHORE_GIT_BRANCH-$(checksum mix.lock),mix-build-$SEMAPHORE_GIT_BRANCH,mix-build-master
+            - mix do deps.get, compile
+            - cache store mix-deps-$SEMAPHORE_GIT_BRANCH-$(checksum mix.lock) deps
+            - cache store mix-build-$SEMAPHORE_GIT_BRANCH-$(checksum mix.lock) _build
+
+  - name: Build Docker image
+    task:
+      env_vars:
+        - name: MIX_ENV
+          value: prod
+      prologue:
+        commands:
+          - checkout
+      jobs:
+        - name: build image
+          commands:
+            - ./build_docker.sh
+            - docker save -o tlc_app_image.tar.gz tlc_app
+            - cache store image-$SEMAPHORE_WORKFLOW_ID tlc_app.tar.gz
+            - cache store dockercompose-$SEMAPHORE_WORKFLOW_ID docker-compose.yml
+            - cache store run-$SEMAPHORE_WORKFLOW_ID run.sh
+            - cache store stop-$SEMAPHORE_WORKFLOW_ID stop.sh
+
+promotions:
+  - name: Deploy to production
+    pipeline_file: production-deploy.yml
+    auto_promote_on:
+      - result: passed
+        branch:
+          - master
