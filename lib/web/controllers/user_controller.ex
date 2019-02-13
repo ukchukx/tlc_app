@@ -8,7 +8,10 @@ defmodule TlcApp.Web.UserController do
       Accounts.list_users()
       |> Enum.filter(&(id != &1.id))
 
-    render conn, "index.html", users: users, user: user
+    render conn, "index.html",
+      users: users,
+      user: user,
+      title: "Users"
   end
 
   def create(%{assigns: %{current_user: %{role: "staff"}}} = conn, %{"user" => %{"role" => role, "phone" => phone } = user_params}) do

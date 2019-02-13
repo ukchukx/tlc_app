@@ -8,7 +8,7 @@ defmodule TlcApp.Web.SessionController do
   end
 
   def signin(conn, _) do
-    render conn, "new.html", path: Routes.session_path(conn, :create_session)
+    render conn, "new.html", path: Routes.session_path(conn, :create_session), title: "Sign in"
   end
 
   def create_session(conn, %{"email" => email, "password" => pass}) do

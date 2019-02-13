@@ -9,7 +9,7 @@
       <div class="col-sm-12">
         <div v-if="localSchedules.length" class="card shadow mb-4">
           <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary">Ongoing classes</h6>
+            <h6 class="m-0 font-weight-bold text-primary">Your ongoing classes</h6>
           </div>
           <div class="card-body">
             <div v-for="s in localSchedules" :key="s.id" class="row mb-3">
@@ -38,7 +38,7 @@
 
         <div class="card shadow mb-4">
           <a href="#collapseCardExample" class="d-block card-header py-3" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="collapseCardExample">
-            <h6 class="m-0 font-weight-bold text-primary">Courses</h6>
+            <h6 class="m-0 font-weight-bold text-primary">Your courses</h6>
           </a>
           <div class="collapse show" id="collapseCardExample" style="">
             <div class="card-body">

@@ -4,7 +4,10 @@ defmodule TlcApp.Web.CourseController do
   alias TlcApp.School
 
   def index(%{assigns: %{current_user: %{role: "staff"} = user}} = conn, _) do
-    render conn, "index.html", courses: School.list_courses(), user: user
+    render conn, "index.html",
+      courses: School.list_courses(),
+      user: user,
+      title: "Courses"
   end
 
   def create(conn, %{"course" => course_params}) do
@@ -20,7 +23,7 @@ defmodule TlcApp.Web.CourseController do
   def show(%{assigns: %{current_user: %{role: "staff"} = user}} = conn, %{"id" => id}) do
     case School.get_course(id) do
       {:ok, course} ->
-        render conn, "show.html", course: course, user: user
+        render conn, "show.html", course: course, user: user, title: "(#{course.code}) #{course.name}"
 
       _ ->
         redirect(conn, to: Routes.course_path(conn, :index))

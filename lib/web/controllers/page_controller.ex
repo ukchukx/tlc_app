@@ -12,7 +12,8 @@ defmodule TlcApp.Web.PageController do
       user: user,
       course_count: course_count,
       active_student_count: active_student_count,
-      staff_count: staff_count
+      staff_count: staff_count,
+      title: "Home"
   end
 
   def index(%{assigns: %{current_user: %{role: "student", id: id} = user}} = conn, _) do
@@ -20,12 +21,12 @@ defmodule TlcApp.Web.PageController do
       user: user,
       course_regs: School.list_course_regs_for_current_diet(id),
       courses: School.list_courses(),
-      schedules: School.get_ongoing_schedules(id)
+      schedules: School.get_ongoing_schedules(id),
+      title: "Home"
   end
 
   def index(conn, params), do:  catch_all(conn, params)
 
-  def catch_all(conn, _) do
-    redirect(conn, to: Routes.page_path(conn, :index))
-  end
+  def catch_all(conn, _), do: redirect(conn, to: Routes.page_path(conn, :index))
+
 end
