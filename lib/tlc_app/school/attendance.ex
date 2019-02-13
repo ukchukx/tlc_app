@@ -2,11 +2,13 @@ defmodule TlcApp.School.Attendance do
   use Ecto.Schema
   import Ecto.Changeset
 
-  @fields [:user_id, :time_table_id]
+  @derive {Jason.Encoder, only: [:id, :user_id, :schedule_id, :inserted_at]}
+
+  @fields [:user_id, :schedule_id]
 
   schema "attendances" do
     belongs_to :user, TlcApp.Accounts.User
-    belongs_to :time_table, TlcApp.School.Timetable
+    belongs_to :schedule, TlcApp.School.Schedule
 
     timestamps()
   end

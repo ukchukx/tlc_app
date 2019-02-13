@@ -3,7 +3,7 @@ defmodule TlcApp.Web.PageController do
 
   alias TlcApp.{Accounts, School}
 
-  def bo_index(%{assigns: %{current_user: %{} = user}} = conn, _) do
+  def index(%{assigns: %{current_user: %{role: "staff"} = user}} = conn, _) do
     course_count = School.list_courses() |> length
     active_student_count = Accounts.list_active_students() |> length
     staff_count = Accounts.list_staff() |> length
@@ -19,12 +19,13 @@ defmodule TlcApp.Web.PageController do
     render conn, "index.html",
       user: user,
       course_regs: School.list_course_regs_for_current_diet(id),
-      courses: School.list_courses()
+      courses: School.list_courses(),
+      schedules: School.get_ongoing_schedules(id)
   end
 
   def index(conn, params), do:  catch_all(conn, params)
 
   def catch_all(conn, _) do
-    redirect(conn, to: TlcApp.Web.SessionController.get_home_path(conn))
+    redirect(conn, to: Routes.page_path(conn, :index))
   end
 end

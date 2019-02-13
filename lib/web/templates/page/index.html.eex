@@ -1,4 +1,5 @@
 <student
   :user="<%= Jason.encode!(@user) %>"
   :courses="<%= Jason.encode!(@courses) %>"
+  :schedules="<%= Jason.encode!(@schedules) %>"
   :course-regs="<%= Jason.encode!(@course_regs) %>" />

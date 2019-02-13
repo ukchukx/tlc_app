@@ -161,14 +161,9 @@ defmodule TlcApp.School do
   """
   def get_attendance!(id), do: Repo.get!(Attendance, id)
 
-  def have_signed_today(user_id, period_id) do
-    {{y, m, d}, _} = :calendar.local_time()
-
-    Repo.all(from a in Attendance, where: a.user_id == ^user_id and a.time_table_id == ^period_id)
-    |> Enum.map(&NaiveDateTime.to_erl(&1.inserted_at))
-    |> Enum.filter(fn {{y1, m1, d1}, _} -> y1 == y and m1 == m and d1 == d  end)
-    |> Enum.count
-    |> Kernel.>(0)
+  def have_signed_today(user_id, schedule_id) do
+    query = from a in Attendance, where: a.user_id == ^user_id and a.schedule_id == ^schedule_id
+    Repo.aggregate(query, :count, :schedule_id) > 0
   end
 
   @doc """
@@ -265,8 +260,6 @@ defmodule TlcApp.School do
   end
 
   def list_course_regs_for_current_diet(user_id) do
-
-
     Repo.all(from c in CourseReg, where: c.user_id == ^user_id and c.diet == ^current_diet())
   end
 
@@ -288,34 +281,19 @@ defmodule TlcApp.School do
   """
   def get_course_reg!(id), do: Repo.get!(CourseReg, id)
 
-  @days %{1 => "Monday", 2 => "Tuesday", 3 => "Wednesday",
-    4 => "Thursday", 5 => "Friday", 6 => "Saturday", 7 => "Sunday"}
+  def get_ongoing_schedules(student_id) do
+    now = DateTime.utc_now() |> DateTime.to_unix(:millisecond)
 
-  def time_between(start_time, end_time) do
-    {date, {h, m, _}} = :calendar.local_time()
-    now_ts = to_ts({date, {h, m, 0}})
-    [sh, sm] = start_time |> String.split(":", trim: true) |> Enum.map(&String.to_integer(&1))
-    start_ts = to_ts({date, {sh, sm, 0}})
-    [eh, em] = end_time |> String.split(":", trim: true) |> Enum.map(&String.to_integer(&1))
-    end_ts = to_ts({date, {eh, em, 0}})
+    course_ids =
+      student_id
+      |> list_course_regs_for_current_diet
+      |> Enum.map(&(&1.course_id))
 
-    now_ts >= start_ts and now_ts <= end_ts
-  end
+    query = from s in Schedule, where: s.course_id in ^course_ids and s.start_date <= ^now and s.end_date >= ^now
 
-  defp to_ts({{_,_,_},{_,_,_}}=datetime_tup), do:  :calendar.datetime_to_gregorian_seconds(datetime_tup) - 62167219200
-
-  def get_ongoing_courses(student_id) do
-    :ok
-    # {{y, m, d}, {h, min, _}} = :calendar.local_time()
-    # today = Map.get(@days, :calendar.day_of_the_week(y, m, d))
-    # regs = list_course_regs_for_current_diet(student_id)
-
-    # list_time_tables
-    # |> Enum.filter(&(&1.day == today))
-    # |> Enum.filter(fn entry -> Enum.any?(regs, &(entry.course_id == &1.id)) end)
-    # |> Enum.filter(fn entry -> Enum.any?(regs, &(entry.stream_id == &1.stream_id)) end)
-    # |> Enum.filter(&(time_between(&1.start_time, &1.end_time)))
-    # |> Enum.map(&Repo.preload(&1, :course))
+    query
+    |> Repo.all
+    |> Enum.filter(fn %{id: id} -> ! have_signed_today(student_id, id) end)
   end
 
   @doc """

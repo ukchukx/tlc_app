@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="csrf-token" content="<%= Phoenix.Controller.get_csrf_token() %>"/>
-    <title>TlcApp · Phoenix Framework</title>
+    <title>TLC App · Attendance</title>
     <link rel="stylesheet" href='<%= Routes.static_path(@conn, "/css/app.css") %>'/>
   </head>
   <body id="page-top">

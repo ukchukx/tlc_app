@@ -23,7 +23,6 @@ defmodule TlcApp.Web.Router do
     post "/signin", SessionController, :create_session
     get "/signout", SessionController, :delete_session
 
-    get "/bo", PageController, :bo_index
 
     resources "/bo/courses", CourseController, only: [:index, :create, :update, :delete, :show]
     post "/bo/courses/:id/schedules", CourseController, :create_schedules
@@ -32,14 +31,9 @@ defmodule TlcApp.Web.Router do
     post "/bo/users/register-course", UserController, :add_course_reg
     delete "/bo/users/unregister-course/:id", UserController, :delete_course_reg
 
-
-    post "/sign-attendance", PageController, :sign_attendance
+    post "/sign-attendance", UserController, :sign_attendance
 
     get "/bo/attendances/download", AttendanceController, :download
-
-    resources "/bo/time-tables", TimetableController
-
-    get "/bo/settings", SettingController, :index
 
     get "/*path", PageController, :catch_all
   end

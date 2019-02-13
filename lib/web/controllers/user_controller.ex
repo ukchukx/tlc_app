@@ -83,6 +83,23 @@ defmodule TlcApp.Web.UserController do
     json(conn, %{success: true})
   end
 
+  def sign_attendance(conn, %{"attendance" => %{"user_id" => uid, "schedule_id" => sid} = params}) do
+    case School.have_signed_today(uid, sid) do
+      true ->
+        json(conn, %{
+          success: true,
+          data: School.get_ongoing_schedules(uid),
+          message: "Attendance already marked"})
+
+      false ->
+        {:ok, _} = School.create_attendance(params)
+        json(conn, %{
+          success: true,
+          data: School.get_ongoing_schedules(uid),
+          message: "Attendance marked"})
+    end
+  end
+
 
   defp do_update(user, params) do
     case Accounts.update_user(user, params) do
