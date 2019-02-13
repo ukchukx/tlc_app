@@ -11,6 +11,8 @@
 # Where 3rd-party dependencies like ExDoc output generated docs.
 /doc/
 
+logs/
+
 # Ignore .fetch files in case you like to edit your project deps locally.
 /.fetch
 
@@ -26,6 +28,8 @@ tlc_app-*.tar
 # If NPM crashes, it generates a log, let's ignore it too.
 npm-debug.log
 
+.directory
+
 # The directory NPM downloads your dependencies sources to.
 node_modules/
 
@@ -33,4 +37,5 @@ node_modules/
 # we ignore priv/static. You may want to comment
 # this depending on your deployment strategy.
 /priv/static/
+
 

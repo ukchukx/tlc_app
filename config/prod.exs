@@ -11,12 +11,31 @@ config :tlc_app, env: :prod
 # which you should run after static files are built and
 # before starting your production server.
 config :tlc_app, TlcApp.Web.Endpoint,
-  http: [:inet6, port: System.get_env("PORT") || 4000],
-  url: [host: "example.com", port: 80],
-  cache_static_manifest: "priv/static/cache_manifest.json"
+  http: [:inet6, port: System.get_env("PORT") || 12000],
+  url: [host: "tlc.catena.com.ng", port: 80],
+  server: true,
+  cache_static_manifest: "priv/static/cache_manifest.json",
+  version: Application.spec(:tlc_app, :vsn)
 
 # Do not print debug messages in production
 config :logger, level: :info
+
+config :logger,
+  backends: [{LoggerFileBackend, :info},
+             {LoggerFileBackend, :error}]
+
+config :logger, :info,
+  path: "logs/info.log",
+  format: "[$date] [$time] [$level] $metadata $levelpad$message\n",
+  metadata: [:date, :application, :module, :function, :line],
+  level: :warn
+
+config :logger, :error,
+  path: "logs/error.log",
+  format: "[$date] [$time] [$level] $metadata $levelpad$message\n",
+  metadata: [:date, :application, :module, :function, :line],
+  level: :error
+
 
 # ## SSL Support
 #
