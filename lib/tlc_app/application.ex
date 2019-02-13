@@ -5,6 +5,8 @@ defmodule TlcApp.Application do
 
   use Application
 
+  require Logger
+
   def start(_type, _args) do
     # List all child processes to be supervised
     children = [
@@ -21,6 +23,13 @@ defmodule TlcApp.Application do
     opts = [strategy: :one_for_one, name: TlcApp.Supervisor]
     case Supervisor.start_link(children, opts) do
       {:ok, _} = res ->
+        if Application.get_env(:tlc_app, :env) != :test do
+          # Run migrations
+          Logger.info "Running migrations..."
+          path = Application.app_dir(:tlc_app, "priv/repo/migrations")
+          Ecto.Migrator.run(Repo, path, :up, all: true)
+        end
+
         TlcApp.Accounts.create_first_user()
 
         res

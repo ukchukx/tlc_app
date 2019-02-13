@@ -1,5 +1,7 @@
 use Mix.Config
 
+config :tlc_app, env: :test
+
 config :bcrypt_elixir, :log_rounds, 4
 
 # We don't run a server during test. If one is required,
