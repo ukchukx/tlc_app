@@ -11,7 +11,7 @@ defmodule TlcApp.Web.AttendanceController do
   end
 
   def download(%{assigns: %{current_user: %{role: "staff"}}} = conn, %{"id" => id}) do
-    attendances = School.list_attendances_for_schedule(id)
+    attendances = School.list_attendance_for_schedule(id)
 
     data =
       attendances

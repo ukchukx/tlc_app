@@ -1,7 +1,17 @@
 <template>
   <Page :user="user" title="Student" current-route="student">
     <div class="row">
-      <div class="col text-center mx-auto">
+      <div class="col-sm-12 col-md-2 offset-md-10">
+        <div v-if="!withinLectureArea" class="card bg-danger text-white shadow mb-3">
+          <div class="card-body">
+            Outside lecture area
+            <div class="small">Attendance can only be marked within the lecture area</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12 text-center mx-auto">
         <flash-message/>
       </div>
     </div>
@@ -25,7 +35,7 @@
               </div>
 
               <div class="col-sm-12 col-md-4">
-                <button @click="mark(s)" class="btn btn-success btn-icon-split">
+                <button v-if="withinLectureArea" @click="mark(s)" class="btn btn-success btn-icon-split">
                   <span class="icon text-white-50">
                     <fa-icon icon="check" />
                   </span>
@@ -67,10 +77,11 @@ import axios from 'axios';
 import Page from '@/components/Page';
 import Flash from '@/mixins/Flash';
 import Filters from '@/mixins/Filters';
+import Location from '@/mixins/Location';
 
 export default {
   name: 'Student',
-  mixins: [Flash, Filters],
+  mixins: [Flash, Filters, Location],
   components: {
     Page
   },

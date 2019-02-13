@@ -137,15 +137,15 @@ defmodule TlcApp.School do
 
   ## Examples
 
-      iex> list_attendances()
+      iex> list_attendance()
       [%Attendance{}, ...]
 
   """
-  def list_attendances do
+  def list_attendance do
     Repo.all(Attendance)
   end
 
-  def list_attendances_for_schedule(id) do
+  def list_attendance_for_schedule(id) do
     query = from a in Attendance, where: a.schedule_id == ^id, order_by: [asc: a.inserted_at]
 
     query
