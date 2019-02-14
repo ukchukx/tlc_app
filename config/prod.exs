@@ -21,7 +21,10 @@ config :tlc_app, TlcApp.Web.Endpoint,
 config :logger, level: :info
 
 config :logger,
-  backends: [:console, {LoggerFileBackend, :info}]
+  backends: [:console, {LoggerFileBackend, :info}],
+  # compile_time_purge_matching: [ For Elixir >= 1.7
+  #   [application: :tlc_app, level_lower_than: :info]
+  # ]
 
 config :logger, :info,
   path: "logs/log.log",
