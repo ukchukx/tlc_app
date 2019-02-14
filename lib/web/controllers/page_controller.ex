@@ -25,7 +25,7 @@ defmodule TlcApp.Web.PageController do
       title: "Home"
   end
 
-  def index(conn, params), do:  catch_all(conn, params)
+  def index(conn, _), do: redirect(conn, to: Routes.session_path(conn, :signin))
 
   def catch_all(conn, _), do: redirect(conn, to: Routes.page_path(conn, :index))
 
