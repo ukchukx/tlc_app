@@ -21,20 +21,13 @@ config :tlc_app, TlcApp.Web.Endpoint,
 config :logger, level: :info
 
 config :logger,
-  backends: [{LoggerFileBackend, :info},
-             {LoggerFileBackend, :error}]
+  backends: [:console, {LoggerFileBackend, :info}]
 
 config :logger, :info,
-  path: "logs/info.log",
+  path: "logs/log.log",
   format: "[$date] [$time] [$level] $metadata $levelpad$message\n",
-  metadata: [:date, :application, :module, :function, :line],
-  level: :warn
-
-config :logger, :error,
-  path: "logs/error.log",
-  format: "[$date] [$time] [$level] $metadata $levelpad$message\n",
-  metadata: [:date, :application, :module, :function, :line],
-  level: :error
+  metadata: [:date, :application, :module, :function, :line, :request_id],
+  level: :info
 
 
 # ## SSL Support
