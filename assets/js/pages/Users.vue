@@ -57,7 +57,7 @@
                 </td>
                 <td>
                   <a v-if="isStudent(u)" :href="userUrl(u)" class="btn btn-sm btn-link">
-                    <fa-icon icon="arrow-right" /> Course registration
+                    <fa-icon icon="arrow-right" /> Courses
                   </a>
                   <button @click="editUser(u)" class="btn btn-sm btn-outline-primary">
                     <fa-icon icon="pen" />
