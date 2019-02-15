@@ -12,7 +12,7 @@
           <button
             @click="showModal()"
             class="btn btn-sm btn-primary"
-          >Add course to student</button>
+          >Add course</button>
         </h6>
       </div>
       <div class="card-body">
@@ -136,7 +136,7 @@ export default {
   },
   computed: {
     modalTitle() {
-      return `Add course reg for the ${this.currentDiet} diet`;
+      return `Add course to student for the ${this.currentDiet} diet`;
     },
     formOk() {
       const { course_id, diet, stream } = this.courseReg;
@@ -153,30 +153,32 @@ export default {
           if (success) {
             this.localCourseRegs.push(data);
             this.closeModal();
-            this.showFlash('Course reg added', 'success');
+            this.showFlash('Course added', 'success');
           } else {
-            this.showFlash('Could not add course reg', 'error');
+            this.showFlash('Could not add course', 'error');
           }
         })
         .catch(({ response: { data } }) => {
           console.log("error", data);
-          this.showFlash('Could not add course reg', 'error');
+          this.showFlash('Could not add course', 'error');
         });
     },
     deleteCourseReg({ id }) {
+      if (!confirm('Are you sure?')) return;
+
       axios
         .delete(`/bo/users/unregister-course/${id}`)
         .then(({ data: { success } }) => {
           if (success) {
-            this.showFlash('Course reg removed', 'success');
+            this.showFlash('Course removed', 'success');
             this.localCourseRegs = this.localCourseRegs.filter(s => id !== s.id);
           } else {
-            this.showFlash('Could not remove course reg', 'error');
+            this.showFlash('Could not remove course', 'error');
           }
         })
         .catch(({ response: { data } }) => {
           console.log("error", data);
-          this.showFlash('Could not remove course reg', 'error');
+          this.showFlash('Could not remove course', 'error');
         });
     },
     showModal() {
