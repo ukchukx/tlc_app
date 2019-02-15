@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <div class="row">
+    <div class="row mt-4">
       <div class="col-sm-8 text-center mx-auto">
         <flash-message />
       </div>
@@ -31,7 +31,7 @@
                   placeholder="Password"
                 >
               </div>
-              <button class="btn btn-primary" type="submit">Login</button>
+              <button :disabled="!formFilled" class="btn btn-primary" type="submit">Login</button>
               <!--<a href="/forgot/password">Forgot password</a> -->
             </form>
           </div>
@@ -67,30 +67,9 @@ export default {
   mounted() {
     const el = document.querySelector('meta[name="csrf-token"]');
     if (el) this.form._csrf_token = el.content;
+    
     if (this.errorMessage) {
       this.showFlash(this.errorMessage, 'error');
-    }
-  },
-  methods: {
-    doAuth() {
-      if (!this.useAjax) {
-        return true;
-      }
-
-      axios
-        .post("/auth/login", this.form)
-        .then(({ data }) => {
-          console.log(data);
-          if (!data.success) {
-            alert(data.message);
-            return;
-          }
-          window.location = "/choose-profile";
-        })
-        .catch(({ response: { data: { message } } }) => {
-          alert(message);
-        });
-      return false;
     }
   }
 };

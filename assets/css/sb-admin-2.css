@@ -11517,7 +11517,7 @@ form.user .btn-user {
   box-shadow: 0 0 0 0.2rem rgba(255, 255, 255, 0.5);
 }
 
-.error {
+.sb-error {
   color: #5a5c69;
   font-size: 7rem;
   position: relative;
@@ -11657,7 +11657,7 @@ form.user .btn-user {
   }
 }
 
-.error:after {
+.sb-error:after {
   content: attr(data-text);
   position: absolute;
   left: 2px;
@@ -11802,7 +11802,7 @@ form.user .btn-user {
   }
 }
 
-.error:before {
+.sb-error:before {
   content: attr(data-text);
   position: absolute;
   left: -2px;
