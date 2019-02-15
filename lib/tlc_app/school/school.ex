@@ -271,7 +271,9 @@ defmodule TlcApp.School do
     Repo.all(from c in CourseReg, where: c.user_id == ^user_id and c.diet == ^current_diet())
   end
 
-  def load_course(resources), do: resources |> Enum.map(&Repo.preload(&1, :course))
+  def load_course(resources), do: Repo.preload(resources, :course)
+
+  def load_schedules(resources), do: Repo.preload(resources, :schedules)
 
   @doc """
   Gets a single course_reg.

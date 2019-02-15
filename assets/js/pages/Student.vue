@@ -17,12 +17,13 @@
     </div>
     <div class="row">
       <div class="col-sm-12">
-        <div v-if="localSchedules.length" class="card shadow mb-4">
+        <div class="card shadow mb-4">
           <div class="card-header py-3">
             <h6 class="m-0 font-weight-bold text-primary">Your ongoing classes</h6>
           </div>
           <div class="card-body">
-            <div v-for="s in localSchedules" :key="s.id" class="row mb-3">
+            <h3 v-if="!ongoingSchedules.length">No ongoing classes</h3>
+            <div v-for="s in ongoingSchedules" :key="s.id" class="row mb-3">
               <div class="col-sm-12 col-md-4">
                 <div class="row mb-3">
                   <div class="col-sm-12">
@@ -52,18 +53,44 @@
           </a>
           <div class="collapse show" id="collapseCardExample" style="">
             <div class="card-body">
-              <div v-for="c in courseRegs" :key="c.id" class="card bg-primary text-white shadow mb-3">
+              <div v-for="c in localCourseRegs" :key="c.id" class="card shadow mb-3">
                 <div class="card-body">
                   <div class="row">
-                    <div class="col-sm-9">
-                      {{ c.course_id | courseName(courses) }}
+                    <div class="col-sm-12 mb-3">
+                      {{ c.course_id | courseName(courses) }}&ensp;|&ensp;{{ c | streamName(streams)}}
+                      &emsp;
+                      <button @click="show(c.id)" class="btn btn-light btn-icon-split btn-sm">
+                        <span class="icon text-gray-600">
+                          <fa-icon icon="arrow-right" />
+                        </span>
+                        <span v-if="showing !== c.id" class="text">Show timetable</span>
+                        <span v-else class="text">Hide timetable</span>
+                      </button>
                     </div>
-                    <div class="col-sm-3 text-right">
-                      | {{ c | streamName(streams) }}
-                    </div>
+                  </div>
+
+                  <div v-if="showing === c.id" class="table-responsive">
+                    <table class="table table-striped table-condensed" id="dataTable" width="100%" cellspacing="0">
+                      <thead>
+                        <tr>
+                          <th>Date</th>
+                          <th>Start</th>
+                          <th>End</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr v-for="s in c.schedules" :key="s.id">
+                          <td>{{ s | scheduleDate }}</td>
+                          <td>{{ s | scheduleStart }}</td>
+                          <td>{{ s | scheduleEnd }}</td>
+                        </tr>
+                      </tbody>
+                    </table>
                   </div>
                 </div>
               </div>
+
+
             </div>
           </div>
         </div>
@@ -92,11 +119,16 @@ export default {
         { id: 1, name: 'Stream 1'},
         { id: 2, name: 'Stream 2' }
       ],
-      localSchedules: this.schedules
+      ongoingSchedules: this.schedules,
+      localCourseRegs: [],
+      showing: 0
     };
   },
   created() {
-    this.localSchedules.sort((a, b) => a.start_time - b.start_time);
+    this.localCourseRegs = this.courseRegs.map((c) => {
+      const schedules = this.courses.find(({ id }) => id === c.course_id).schedules;
+      return Object.assign(c, { schedules });
+    });
   },
   methods: {
     mark(schedule) {
@@ -105,8 +137,7 @@ export default {
         .post('/sign-attendance', { attendance })
         .then(({ data: { success, data, message } }) => {
           if (success) {
-            this.localSchedules = data;
-            this.localSchedules.sort((a, b) => a.start_time - b.start_time);
+            this.ongoingSchedules = data;
             this.showFlash(message, 'success');
           } else {
             this.showFlash(message, 'error');
@@ -116,6 +147,10 @@ export default {
           console.log("error", data);
           this.showFlash('Could not mark attendance', 'error');
         });
+    },
+    show(id) {
+      // If this is already showing, hide, else show
+      this.showing = this.showing === id ? 0 : id;
     }
   }
 }

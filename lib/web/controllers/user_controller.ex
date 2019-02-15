@@ -92,14 +92,14 @@ defmodule TlcApp.Web.UserController do
       true ->
         json(conn, %{
           success: true,
-          data: School.get_ongoing_schedules(uid),
+          data: uid |> School.get_ongoing_schedules |> Enum.sort(&(&1.start_date <= &2.start_date)),
           message: "Attendance already marked"})
 
       false ->
         {:ok, _} = School.create_attendance(params)
         json(conn, %{
           success: true,
-          data: School.get_ongoing_schedules(uid),
+          data: uid |> School.get_ongoing_schedules |> Enum.sort(&(&1.start_date <= &2.start_date)),
           message: "Attendance marked"})
     end
   end

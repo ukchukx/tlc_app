@@ -17,10 +17,31 @@ defmodule TlcApp.Web.PageController do
   end
 
   def index(%{assigns: %{current_user: %{role: "student", id: id} = user}} = conn, _) do
+    course_regs = School.list_course_regs_for_current_diet(id)
+    course_ids = Enum.map(course_regs, &(&1.course_id))
+
+    today = DateTime.utc_now() |> DateTime.to_unix(:millisecond)
+
+    
+    courses = 
+      School.list_courses
+      |> Enum.filter(&(&1.id in course_ids)) # Get only courses the student is registered for
+      |> School.load_schedules
+      |> Enum.map(fn course = %{id: id, schedules: schedules} ->  
+        %{stream: stream } = Enum.find(course_regs, &(&1.course_id == id))
+        schedules = 
+          schedules
+          |> Enum.filter(&(&1.stream == stream)) # Take only schedules for the student's stream
+          |> Enum.filter(&(&1.start_date >= today)) # Take only schedules that are not in the past
+          |> Enum.sort(&(&1.start_date <= &2.start_date)) # Latest first
+
+        Map.put(course, :schedules, schedules)
+      end)
+
     render conn, "index.html",
       user: user,
       course_regs: School.list_course_regs_for_current_diet(id),
-      courses: School.list_courses(),
+      courses: courses,
       schedules: School.get_ongoing_schedules(id),
       title: "Home"
   end
