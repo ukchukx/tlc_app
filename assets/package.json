@@ -13,7 +13,6 @@
     "luxon": "^1.11.2",
     "moment": "^2.24.0",
     "phoenix": "file:../deps/phoenix",
-    "phoenix_html": "file:../deps/phoenix_html",
     "vue": "^2.6.6",
     "vue-datetime": "^1.0.0-beta.10",
     "vue-flash-message": "^0.7.2",
