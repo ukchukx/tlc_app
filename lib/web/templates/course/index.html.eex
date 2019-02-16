@@ -1,1 +1,3 @@
-<courses :courses="<%= Jason.encode!(@courses) %>" :user="<%= Jason.encode!(@user) %>" />
+<div id="app">
+  <courses :courses="<%= Jason.encode!(@courses) %>" :user="<%= Jason.encode!(@user) %>" />
+</div>

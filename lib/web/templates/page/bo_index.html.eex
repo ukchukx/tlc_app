@@ -1,5 +1,7 @@
-<dashboard
-  :user="<%= Jason.encode!(@user) %>"
-  :active-student-count="<%= @active_student_count %>"
-  :staff-count="<%= @staff_count %>"
-  :course-count="<%= @course_count %>" />
+<div id="app">
+  <dashboard
+    :user="<%= Jason.encode!(@user) %>"
+    :active-student-count="<%= @active_student_count %>"
+    :staff-count="<%= @staff_count %>"
+    :course-count="<%= @course_count %>" />
+</div>

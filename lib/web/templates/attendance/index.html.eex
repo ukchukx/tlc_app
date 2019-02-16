@@ -1,4 +1,6 @@
-<attendance
-  :schedules="<%= Jason.encode!(@schedules) %>"
-  :courses="<%= Jason.encode!(@courses) %>"
-  :user="<%= Jason.encode!(@user) %>" />
+<div id="app">
+  <attendance
+    :schedules="<%= Jason.encode!(@schedules) %>"
+    :courses="<%= Jason.encode!(@courses) %>"
+    :user="<%= Jason.encode!(@user) %>" />
+</div>
