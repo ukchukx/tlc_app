@@ -1,7 +1,7 @@
 _build
+.elixir_ls
+.git
 .semaphore
 assets/node_modules
-deps
 logs
 test
-.elixir_ls
