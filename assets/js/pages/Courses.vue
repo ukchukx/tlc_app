@@ -29,8 +29,11 @@
                 <td>{{ course.code }}</td>
                 <td>{{ course.name }}</td>
                 <td>
-                  <a :href="courseUrl(course)" class="btn btn-sm btn-link">
-                    <fa-icon icon="arrow-right" /> Schedules
+                  <a :href="courseUrl(course)" class="btn btn-light btn-icon-split btn-sm">
+                    <span class="icon text-gray-600">
+                      <fa-icon icon="arrow-right" />
+                    </span>
+                    <span class="text">Schedules</span>
                   </a>
                   <button @click="editCourse(course)" class="btn btn-sm btn-outline-primary">
                     <fa-icon icon="pen" />

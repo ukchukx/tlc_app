@@ -56,8 +56,11 @@
                   <span v-else class="badge badge-danger">No</span>
                 </td>
                 <td>
-                  <a v-if="isStudent(u)" :href="userUrl(u)" class="btn btn-sm btn-link">
-                    <fa-icon icon="arrow-right" /> Courses
+                  <a v-if="isStudent(u)" :href="userUrl(u)" class="btn btn-light btn-icon-split btn-sm">
+                    <span class="icon text-gray-600">
+                      <fa-icon icon="arrow-right" />
+                    </span>
+                    <span class="text">Courses</span>
                   </a>
                   <button @click="editUser(u)" class="btn btn-sm btn-outline-primary">
                     <fa-icon icon="pen" />

@@ -32,7 +32,7 @@
                 <td>{{ s | scheduleStart }}</td>
                 <td>{{ s | scheduleEnd }}</td>
                 <td>
-                  <button @click="download(s)" class="btn btn-primary btn-icon-split">
+                  <button @click="download(s)" class="btn btn-primary btn-icon-split btn-sm">
                     <span class="icon text-white-50">
                       <fa-icon icon="file-download" />
                     </span>
