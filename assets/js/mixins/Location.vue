@@ -35,7 +35,8 @@ export default {
     navigator.geolocation.watchPosition(
       ({ coords }) => {
         console.log(coords);
-        this.$emit('new-coords', coords);
+        this.lat = coords.latitude;
+        this.long = coords.longitude;
         this.withinLectureArea = this.fence.inside(coords);
         console.info('inside?', this.withinLectureArea);
       },

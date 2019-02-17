@@ -5,7 +5,7 @@
       <div class="col-sm-12 col-md-2 offset-md-10">
         <div v-if="!withinLectureArea" class="card bg-danger text-white shadow mb-3">
           <div class="card-body">
-            Outside lecture area {{ lat }}, {{ long }}
+            Outside lecture area
             <div class="small">Attendance can only be marked within the lecture area</div>
           </div>
         </div>
@@ -20,7 +20,7 @@
       <div class="col-sm-12">
         <div class="card shadow mb-4">
           <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary">Your ongoing classes</h6>
+            <h6 class="m-0 font-weight-bold text-primary">Your ongoing classes <small>{{ lat }}, {{ long }}</small></h6>
           </div>
           <div class="card-body">
             <h3 v-if="!ongoingSchedules.length">No ongoing classes</h3>
@@ -148,11 +148,6 @@ export default {
     this.localCourseRegs = this.courseRegs.map((c) => {
       const { schedules } = this.courses.find(({ id }) => id === c.course_id);
       return Object.assign(c, { schedules });
-    });
-
-    Location.on('new-coords', ({ latitude, longitude }) => {
-      this.lat = latitude;
-      this.long = longitude;
     });
   },
   methods: {
