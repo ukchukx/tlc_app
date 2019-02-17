@@ -1,4 +1,5 @@
 <template>
+  <!-- eslint-disable -->
   <Page :user="user" title="Courses" current-route="courses">
     <div class="row">
       <div class="col text-center mx-auto">
@@ -108,11 +109,20 @@ const emptyCourse = {
 
 export default {
   name: 'Courses',
-  mixins: [Flash],
   components: {
     Page
   },
-  props: ['courses', 'user'],
+  mixins: [Flash],
+  props: {
+    user: {
+      type: Object,
+      default: () => {}
+    },
+    courses: {
+      type: Array,
+      default: () => []
+    }
+  },
   data() {
     return {
       localCourses: this.courses,
@@ -151,10 +161,10 @@ export default {
     saveCourse() {
       if (this.course.id) {
         axios
-          .put(`/bo/courses/${this.course.id}`, {course: this.course })
+          .put(`/bo/courses/${this.course.id}`, { course: this.course })
           .then(({ data: { success, data } }) => {
             if (success) {
-              const idx = this.localCourses.findIndex(({ id }) => id == this.course.id);
+              const idx = this.localCourses.findIndex(({ id }) => id === this.course.id);
               this.localCourses.splice(idx, 1, data);
               this.closeModal();
               this.showFlash('Course updated', 'success');
@@ -163,7 +173,7 @@ export default {
             }
           })
           .catch(({ response: { data } }) => {
-            console.log("error", data);
+            console.log('error', data);
             this.showFlash('Could not update course', 'error');
           });
       } else {
@@ -179,7 +189,7 @@ export default {
             }
           })
           .catch(({ response: { data } }) => {
-            console.log("error", data);
+            console.log('error', data);
             this.showFlash('Could not create course', 'error');
           });
       }
@@ -206,16 +216,18 @@ export default {
           }
         })
         .catch(({ response: { data } }) => {
-          console.log("error", data);
+          console.log('error', data);
           this.showFlash('Could not delete course', 'error');
         });
     },
     showModal() {
+      /* eslint-disable no-undef */
       $(this.$refs.modal).modal({ backdrop: 'static', keyboard: false });
     },
     closeModal() {
+      /* eslint-disable no-undef */
       $(this.$refs.modal).modal('hide');
     }
   }
-}
+};
 </script>

@@ -1,4 +1,5 @@
 <template>
+  <!-- eslint-disable -->
   <div class="container">
     <div class="row mt-4">
       <div class="col-sm-8 text-center mx-auto">
@@ -47,7 +48,16 @@ import Flash from '@/mixins/Flash';
 export default {
   name: 'Login',
   mixins: [Flash],
-  props: ['formPath', 'errorMessage'],
+  props: {
+    formPath: {
+      type: String,
+      default: () => ''
+    },
+    errorMessage: {
+      type: String,
+      default: () => ''
+    }
+  },
   data() {
     return {
       useAjax: true,
@@ -67,11 +77,10 @@ export default {
   mounted() {
     const el = document.querySelector('meta[name="csrf-token"]');
     if (el) this.form._csrf_token = el.content;
-    
+
     if (this.errorMessage) {
       this.showFlash(this.errorMessage, 'error');
     }
   }
 };
 </script>
-

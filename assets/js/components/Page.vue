@@ -1,4 +1,5 @@
 <template>
+  <!-- eslint-disable -->
   <div id="wrapper">
     <Sidebar :current-route="currentRoute" v-if="isStaff" />
     <div id="content-wrapper" class="d-flex flex-column">
@@ -26,7 +27,20 @@ export default {
     Sidebar,
     Footer
   },
-  props: ['user', 'title', 'currentRoute'],
+  props: {
+    currentRoute: {
+      type: String,
+      default: () => ''
+    },
+    title: {
+      type: String,
+      default: () => ''
+    },
+    user: {
+      type: Object,
+      default: () => {}
+    }
+  },
   computed: {
     isStaff() {
       return this.user.role === 'staff';

@@ -1,4 +1,5 @@
 <template>
+  <!-- eslint-disable -->
   <Page :user="user" title="Course schedule">
     <div class="row">
       <div class="col text-center mx-auto">
@@ -175,11 +176,20 @@ import dateGenerator from '@/utils/dateGenerator';
 
 export default {
   name: 'Course',
-  mixins: [Flash, Filters],
   components: {
     Page
   },
-  props: ['course', 'user'],
+  mixins: [Flash, Filters],
+  props: {
+    course: {
+      type: Object,
+      default: () => {}
+    },
+    user: {
+      type: Object,
+      default: () => {}
+    }
+  },
   data() {
     const now = new Date();
     const month = now.getMonth() <= 4 ? 'May' : 'November';
@@ -188,7 +198,7 @@ export default {
     return {
       currentDiet,
       streams: [
-        { id: 1, name: 'Stream 1'},
+        { id: 1, name: 'Stream 1' },
         { id: 2, name: 'Stream 2' }
       ],
       localSchedules: this.course.schedules,
@@ -236,32 +246,33 @@ export default {
     createSchedule() {
       if (this.isSingle) {
         this.endDate = this.startDate;
-        this.selectedDay = new Date(this.startDate).toString().split(' ')[0];
+        this.selectedDay = new Date(this.startDate).toString().split(' ')[0]; // eslint-disable-line prefer-destructuring
       }
 
-      const schedules = [...dateGenerator({
+      const generatorOpts = {
         selectedDays: [this.selectedDay],
         end: new Date(this.endDate),
         start: new Date(this.startDate)
-        })
-      ]
-      .map((date) => {
-        const start = new Date(this.startTime);
-        const end = new Date(this.endTime);
-        const startTime = new Date(date);
-        const endTime = new Date(date);
+      };
 
-        startTime.setHours(start.getHours(), start.getMinutes(), 0, 0);
-        endTime.setHours(end.getHours(), end.getMinutes(), 0, 0);
+      const schedules = [...dateGenerator(generatorOpts)]
+        .map((date) => {
+          const start = new Date(this.startTime);
+          const end = new Date(this.endTime);
+          const startTime = new Date(date);
+          const endTime = new Date(date);
 
-        return {
-          start_date: startTime.getTime(),
-          end_date: endTime.getTime(),
-          course_id: this.course.id,
-          stream: this.stream,
-          diet: this.currentDiet
-        };
-      });
+          startTime.setHours(start.getHours(), start.getMinutes(), 0, 0);
+          endTime.setHours(end.getHours(), end.getMinutes(), 0, 0);
+
+          return {
+            start_date: startTime.getTime(),
+            end_date: endTime.getTime(),
+            course_id: this.course.id,
+            stream: this.stream,
+            diet: this.currentDiet
+          };
+        });
 
       axios
         .post(`/bo/courses/${this.course.id}/schedules`, { schedules })
@@ -277,7 +288,7 @@ export default {
           }
         })
         .catch(({ response: { data } }) => {
-          console.log("error", data);
+          console.log('error', data);
           this.showFlash('Could not add schedules', 'error');
         });
     },
@@ -293,15 +304,17 @@ export default {
           }
         })
         .catch(({ response: { data } }) => {
-          console.log("error", data);
+          console.log('error', data);
           this.showFlash('Could not remove schedule', 'error');
         });
     },
     showModal() {
+      /* eslint-disable no-undef */
       $(this.$refs.modal).modal({ backdrop: 'static', keyboard: false });
     },
     closeModal() {
       this.reset();
+      /* eslint-disable no-undef */
       $(this.$refs.modal).modal('hide');
     },
     reset() {
@@ -313,5 +326,5 @@ export default {
       this.selectedType = 'Range';
     }
   }
-}
+};
 </script>

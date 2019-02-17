@@ -1,10 +1,11 @@
 <template>
+  <!-- eslint-disable -->
   <Page :user="user" title="Student" current-route="student">
     <div class="row">
       <div class="col-sm-12 col-md-2 offset-md-10">
         <div v-if="!withinLectureArea" class="card bg-danger text-white shadow mb-3">
           <div class="card-body">
-            Outside lecture area
+            Outside lecture area {{ lat }}, {{ long }}
             <div class="small">Attendance can only be marked within the lecture area</div>
           </div>
         </div>
@@ -108,26 +109,50 @@ import Location from '@/mixins/Location';
 
 export default {
   name: 'Student',
-  mixins: [Flash, Filters, Location],
   components: {
     Page
   },
-  props: ['user', 'courseRegs', 'courses', 'schedules'],
+  mixins: [Flash, Filters, Location],
+  props: {
+    user: {
+      type: Object,
+      default: () => {}
+    },
+    courses: {
+      type: Array,
+      default: () => []
+    },
+    schedules: {
+      type: Array,
+      default: () => []
+    },
+    courseRegs: {
+      type: Array,
+      default: () => []
+    }
+  },
   data() {
     return {
       streams: [
-        { id: 1, name: 'Stream 1'},
+        { id: 1, name: 'Stream 1' },
         { id: 2, name: 'Stream 2' }
       ],
       ongoingSchedules: this.schedules,
       localCourseRegs: [],
-      showing: 0
+      showing: 0,
+      lat: 0,
+      long: 0
     };
   },
   created() {
     this.localCourseRegs = this.courseRegs.map((c) => {
-      const schedules = this.courses.find(({ id }) => id === c.course_id).schedules;
+      const { schedules } = this.courses.find(({ id }) => id === c.course_id);
       return Object.assign(c, { schedules });
+    });
+
+    Location.on('new-coords', ({ latitude, longitude }) => {
+      this.lat = latitude;
+      this.long = longitude;
     });
   },
   methods: {
@@ -144,7 +169,7 @@ export default {
           }
         })
         .catch(({ response: { data } }) => {
-          console.log("error", data);
+          console.log('error', data);
           this.showFlash('Could not mark attendance', 'error');
         });
     },
@@ -153,5 +178,5 @@ export default {
       this.showing = this.showing === id ? 0 : id;
     }
   }
-}
+};
 </script>

@@ -1,4 +1,5 @@
 <template>
+  <!-- eslint-disable -->
   <Page :user="user" title="Attendances">
     <div class="row">
       <div class="col text-center mx-auto">
@@ -57,11 +58,24 @@ import Filters from '@/mixins/Filters';
 
 export default {
   name: 'Attendance',
-  mixins: [Flash, Filters],
   components: {
     Page
   },
-  props: ['schedules', 'user', 'courses'],
+  mixins: [Flash, Filters],
+  props: {
+    schedules: {
+      type: Array,
+      default: () => []
+    },
+    user: {
+      type: Object,
+      default: () => {}
+    },
+    courses: {
+      type: Array,
+      default: () => []
+    }
+  },
   data() {
     const now = new Date();
     const month = now.getMonth() <= 4 ? 'May' : 'November';
@@ -70,7 +84,7 @@ export default {
     return {
       currentDiet,
       streams: [
-        { id: 1, name: 'Stream 1'},
+        { id: 1, name: 'Stream 1' },
         { id: 2, name: 'Stream 2' }
       ],
       busyId: 0
@@ -95,7 +109,9 @@ export default {
         document.body.appendChild(link);
         link.click();
         this.busyId = 0;
-      }).catch(() => this.busyId = 0);
+      }).catch(() => {
+        this.busyId = 0;
+      });
     },
     getFileName(s) {
       const { streamName, scheduleDate, courseName } = this.$options.filters;
@@ -107,5 +123,5 @@ export default {
       return `${diet}_${course}_${stream}_${date}.xlsx`.replace('__', '_');
     }
   }
-}
+};
 </script>

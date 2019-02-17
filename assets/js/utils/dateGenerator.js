@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 export default function* dateGenerator({ selectedDays = [], end = null, start = null }) {
   const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
   if (!start) start = new Date();

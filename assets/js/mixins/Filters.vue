@@ -1,4 +1,5 @@
 <script>
+/* eslint-disable no-undef */
 import moment from 'moment';
 
 export default {

@@ -1,4 +1,5 @@
 <template>
+  <!-- eslint-disable -->
   <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
     <!-- Sidebar - Brand -->
@@ -54,7 +55,8 @@ export default {
   name: 'Sidebar',
   props: {
     currentRoute: {
-      default: ''
+      type: String,
+      default: () => ''
     }
   },
   methods: {
@@ -62,5 +64,5 @@ export default {
       return route === this.currentRoute ? 'nav-item active' : 'nav-item';
     }
   }
-}
+};
 </script>

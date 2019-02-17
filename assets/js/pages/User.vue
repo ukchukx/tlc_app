@@ -1,4 +1,5 @@
 <template>
+  <!-- eslint-disable -->
   <Page :user="authUser" title="Student courses">
     <div class="row">
       <div class="col text-center mx-auto">
@@ -103,11 +104,28 @@ import Filters from '@/mixins/Filters';
 
 export default {
   name: 'User',
-  mixins: [Flash, Filters],
   components: {
     Page
   },
-  props: ['authUser', 'user', 'courses', 'courseRegs'],
+  mixins: [Flash, Filters],
+  props: {
+    authUser: {
+      type: Object,
+      default: () => {}
+    },
+    user: {
+      type: Object,
+      default: () => {}
+    },
+    courses: {
+      type: Array,
+      default: () => []
+    },
+    courseRegs: {
+      type: Array,
+      default: () => []
+    }
+  },
   data() {
     const today = new Date();
     const month = today.getMonth() <= 4 ? 'May' : 'November';
@@ -159,7 +177,7 @@ export default {
           }
         })
         .catch(({ response: { data } }) => {
-          console.log("error", data);
+          console.log('error', data);
           this.showFlash('Could not add course', 'error');
         });
     },
@@ -177,17 +195,19 @@ export default {
           }
         })
         .catch(({ response: { data } }) => {
-          console.log("error", data);
+          console.log('error', data);
           this.showFlash('Could not remove course', 'error');
         });
     },
     showModal() {
+      /* eslint-disable no-undef */
       this.courseReg = { ...this.defaultCourseReg };
       $(this.$refs.modal).modal({ backdrop: 'static', keyboard: false });
     },
     closeModal() {
+      /* eslint-disable no-undef */
       $(this.$refs.modal).modal('hide');
     }
   }
-}
+};
 </script>

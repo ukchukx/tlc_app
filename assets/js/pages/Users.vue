@@ -1,4 +1,5 @@
 <template>
+  <!-- eslint-disable -->
   <Page :user="authUser" title="Users" current-route="users">
     <div class="row">
       <div class="col text-center mx-auto">
@@ -155,14 +156,24 @@ const emptyUser = {
   role: 'student',
   id: 0
 };
+/* eslint-disable operator-linebreak */
 
 export default {
   name: 'Users',
-  mixins: [Flash],
   components: {
     Page
   },
-  props: ['users', 'authUser'],
+  mixins: [Flash],
+  props: {
+    users: {
+      type: Array,
+      default: () => []
+    },
+    authUser: {
+      type: Object,
+      default: () => {}
+    }
+  },
   data() {
     return {
       localUsers: this.users,
@@ -213,10 +224,10 @@ export default {
     saveUser() {
       if (this.user.id) {
         axios
-          .put(`/bo/users/${this.user.id}`, {user: this.user })
+          .put(`/bo/users/${this.user.id}`, { user: this.user })
           .then(({ data: { success, data } }) => {
             if (success) {
-              const idx = this.localUsers.findIndex(({ id }) => id == this.user.id);
+              const idx = this.localUsers.findIndex(({ id }) => id === this.user.id);
               this.localUsers.splice(idx, 1, data);
               this.closeModal();
               this.showFlash('User updated', 'success');
@@ -225,7 +236,7 @@ export default {
             }
           })
           .catch(({ response: { data } }) => {
-            console.log("error", data);
+            console.log('error', data);
             this.showFlash('Could not update user', 'error');
           });
       } else {
@@ -241,7 +252,7 @@ export default {
             }
           })
           .catch(({ response: { data } }) => {
-            console.log("error", data);
+            console.log('error', data);
             this.showFlash('Could not create user', 'error');
           });
       }
@@ -268,15 +279,15 @@ export default {
           }
         })
         .catch(({ response: { data } }) => {
-          console.log("error", data);
+          console.log('error', data);
           this.showFlash('Could not delete user', 'error');
         });
     },
     showModal() {
-      $(this.$refs.modal).modal({ backdrop: 'static', keyboard: false });
+      $(this.$refs.modal).modal({ backdrop: 'static', keyboard: false }); // eslint-disable-line no-undef
     },
     closeModal() {
-      $(this.$refs.modal).modal('hide');
+      $(this.$refs.modal).modal('hide'); // eslint-disable-line no-undef
     },
     isStudent({ role }) {
       return role === 'student';
@@ -290,13 +301,13 @@ export default {
       reader.onload = (f) => {
         const role = 'student';
         const workbook = XLSX.read(f.target.result, { type: 'binary' });
-        const data = XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]], { header: 1 });
+        const sheetData = XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]], { header: 1 });
 
-        data
+        sheetData
           .filter(([fn, ln, email, phone]) => this.localUsers.every(u => u.email !== email && u.phone !== phone))
           .forEach(([fn, ln, email, phone]) => {
             if (fn && fn.toLowerCase() !== 'first name') {
-              phone = typeof phone === 'number' ? `0${phone}` : phone;
+              phone = typeof phone === 'number' ? `0${phone}` : phone; // eslint-disable-line no-param-reassign
               const user = {
                 first_name: fn,
                 last_name: ln,
@@ -313,7 +324,7 @@ export default {
                   }
                 })
                 .catch(({ response: { data } }) => {
-                  console.log("error", data);
+                  console.log('error', data);
                 });
             }
           });
@@ -321,5 +332,5 @@ export default {
       reader.readAsBinaryString(excelFile);
     }
   }
-}
+};
 </script>

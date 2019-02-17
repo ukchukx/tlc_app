@@ -7,8 +7,6 @@ import { fas } from '@fortawesome/free-solid-svg-icons';
 import { far } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import Datetime from 'vue-datetime';
-window.jQuery = window.$ = require('jquery');
-
 // Import local files
 // import socket from "./socket"
 import Dashboard from '@/pages/Dashboard';
@@ -19,6 +17,8 @@ import Users from '@/pages/Users';
 import User from '@/pages/User';
 import Student from '@/pages/Student';
 import Attendance from '@/pages/Attendance';
+
+window.jQuery = window.$ = require('jquery'); // eslint-disable-line no-multi-assign
 
 Vue.config.productionTip = false;
 
