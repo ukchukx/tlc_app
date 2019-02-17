@@ -20,9 +20,9 @@ export default {
       withinLectureArea: false,
       fence: new CircularGeofenceRegion({
         name: 'TlcFence',
-        latitude: 9.1805,
-        longitude: 7.1793,
-        radius: 5 // meters
+        latitude: 9.0652514,
+        longitude: 7.4271755,
+        radius: 15 // meters
       })
     };
   },
@@ -34,6 +34,7 @@ export default {
 
     navigator.geolocation.watchPosition(
       ({ coords }) => {
+        console.log(coords);
         this.withinLectureArea = this.fence.inside(coords);
         console.info('inside?', this.withinLectureArea);
       },
