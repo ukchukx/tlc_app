@@ -1,15 +1,17 @@
 <script>
-class CircularGeofenceRegion {
+class Bounds {
   constructor(opts) {
-    Object.assign(this, opts);
+    this.center = { latitude: 9.0652514, longitude: 7.4271755 }; // TLC
+    this.radius = 0.01; // 10m in Km
   }
 
-  inside({ latitude, longitude }) {
-    const R = 63710; // Earth's radius in m
+  inside({ latitude, longitude }) { // Algo provided by https://stackoverflow.com/users/69083/guffa
+    const ky = 40000 / 360; // KM per degree of latitude
+    const kx = Math.cos(Math.PI * this.center.latitude / 180.0) * ky; // KM per degree of longitude
+    const dx = Math.abs(this.center.longitude - longitude) * kx;
+    const dy = Math.abs(this.center.latitude - latitude) * ky;
 
-    return Math.acos(Math.sin(this.latitude) * Math.sin(latitude) +
-                     Math.cos(this.latitude) * Math.cos(latitude) *
-                     Math.cos(longitude - this.longitude)) * R < this.radius;
+    return Math.sqrt(dx * dx + dy * dy) <= this.radius;
   }
 }
 
@@ -18,12 +20,7 @@ export default {
   data() {
     return {
       withinLectureArea: false,
-      fence: new CircularGeofenceRegion({
-        name: 'TlcFence',
-        latitude: 9.0652514,
-        longitude: 7.4271755,
-        radius: 15 // meters
-      })
+      fence: new Bounds()
     };
   },
   mounted() {
@@ -44,7 +41,7 @@ export default {
         console.error(err);
         this.withinLectureArea = false;
       }, {
-        enableHighAccuracy: false,
+        enableHighAccuracy: true,
         maximumAge: 0
       }
     );
