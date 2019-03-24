@@ -1,7 +1,8 @@
 <script>
 class Bounds {
   constructor(opts) {
-    this.center = { latitude: 9.0652514, longitude: 7.4271755 }; // TLC
+    // this.center = { latitude: 9.0652514, longitude: 7.4271755 }; // TLC
+    this.center = { lat: 9.1582655, lng: 7.3132746 }; // House
     this.radius = 0.01; // 10m in Km
   }
 
