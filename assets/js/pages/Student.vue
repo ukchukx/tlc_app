@@ -62,7 +62,8 @@
                       &emsp;
                       <button @click="show(c.id)" class="btn btn-light btn-icon-split btn-sm">
                         <span class="icon text-gray-600">
-                          <fa-icon icon="arrow-right" />
+                          <fa-icon v-if="showing === c.id" icon="arrow-down" />
+                          <fa-icon v-else icon="arrow-right" />
                         </span>
                         <span v-if="showing !== c.id" class="text">Show timetable</span>
                         <span v-else class="text">Hide timetable</span>
