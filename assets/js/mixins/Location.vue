@@ -3,7 +3,7 @@ class Bounds {
   constructor(opts) {
     this.center = { latitude: 9.0674029, longitude: 7.4283716 }; // TLC
     // this.center = { lat: 9.1582655, lng: 7.3132746 }; // Test
-    this.radius = 0.01; // 10m in Km
+    this.radius = 0.02; // 20m in Km
   }
 
   inside({ latitude, longitude }) { // Algo provided by https://stackoverflow.com/users/69083/guffa
