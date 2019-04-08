@@ -1,8 +1,20 @@
+<template>
+  <div />
+</template>
 <script>
 class Bounds {
   constructor(opts) {
     this.center = { latitude: 9.0674029, longitude: 7.4283716 }; // TLC
     // this.center = { lat: 9.1582655, lng: 7.3132746 }; // Test
+    /**
+    Outside:
+    { latitude: 9.0676665, longitude: 7.428519 }
+    { latitude: 9.0673378, longitude: 7.4286539 }
+    { latitude: 9.067164, longitude: 7.4286923 }
+    Inside:
+    { latitude: 9.0674762, longitude: 7.4282976 }
+    { latitude: 9.0674029, longitude: 7.4283716 }
+     */
     this.radius = 0.02; // 20m in Km
   }
 
@@ -20,7 +32,6 @@ export default {
   name: 'Location',
   data() {
     return {
-      withinLectureArea: false,
       fence: new Bounds()
     };
   },
@@ -33,10 +44,10 @@ export default {
     navigator.geolocation.watchPosition(
       ({ coords }) => {
         console.log(coords);
-        this.lat = coords.latitude;
-        this.long = coords.longitude;
-        this.withinLectureArea = this.fence.inside(coords);
-        console.info('inside?', this.withinLectureArea);
+        const { latitude, longitude } = coords;
+        const inside = this.fence.inside({ latitude, longitude });
+
+        this.$emit('location', { inside, latitude, longitude });
       },
       (err) => {
         console.error(err);

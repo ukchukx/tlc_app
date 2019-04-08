@@ -11,6 +11,7 @@
         </div>
       </div>
     </div>
+    <location @location="locationChanged" />
     <div class="row">
       <div class="col-sm-12 text-center mx-auto">
         <flash-message/>
@@ -104,16 +105,17 @@
 <script>
 import axios from 'axios';
 import Page from '@/components/Page';
+import Location from '@/components/Location';
 import Flash from '@/mixins/Flash';
 import Filters from '@/mixins/Filters';
-import Location from '@/mixins/Location';
 
 export default {
   name: 'Student',
   components: {
-    Page
+    Page,
+    Location
   },
-  mixins: [Flash, Filters, Location],
+  mixins: [Flash, Filters],
   props: {
     user: {
       type: Object,
@@ -142,7 +144,8 @@ export default {
       localCourseRegs: [],
       showing: 0,
       lat: 0,
-      long: 0
+      long: 0,
+      withinLectureArea: false
     };
   },
   created() {
@@ -152,6 +155,12 @@ export default {
     });
   },
   methods: {
+    locationChanged({ inside, latitude, longitude }) {
+      this.withinLectureArea = inside;
+      this.lat = latitude;
+      this.long = longitude;
+      console.info('inside?', inside);
+    },
     mark(schedule) {
       const attendance = { schedule_id: schedule.id, user_id: this.user.id };
       axios
