@@ -4,8 +4,8 @@
 <script>
 class Bounds {
   constructor(opts) {
-    this.center = { latitude: 9.0014854, longitude: 7.4542722 }; // AppMart
-    // this.center = { latitude: 9.0674029, longitude: 7.4283716 }; // TLC
+    this.center = { latitude: 9.0674029, longitude: 7.4283716 }; // TLC
+    // this.center = { latitude: 9.0014854, longitude: 7.4542722 }; // AppMart
     // this.center = { lat: 9.1582655, lng: 7.3132746 }; // Test
     /**
     Outside:
