@@ -16,7 +16,7 @@ class Bounds {
     { latitude: 9.0674762, longitude: 7.4282976 }
     { latitude: 9.0674029, longitude: 7.4283716 }
      */
-    this.radius = 0.02; // 20m in Km
+    this.radius = 0.022; // 22m in Km
   }
 
   inside({ latitude, longitude }) { // Algo provided by https://stackoverflow.com/users/69083/guffa
