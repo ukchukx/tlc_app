@@ -304,7 +304,9 @@ export default {
         const sheetData = XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]], { header: 1 });
 
         sheetData
-          .filter(([fn, ln, email, phone]) => this.localUsers.every(u => u.email !== email && u.phone !== phone))
+          .filter(([fn, ln, email, phone]) => this.localUsers
+            .filter(u => !!u.email.length)
+            .every(u => u.email !== email && u.phone !== phone))
           .forEach(([fn, ln, email, phone]) => {
             if (fn && fn.toLowerCase() !== 'first name') {
               phone = typeof phone === 'number' ? `0${phone}` : phone; // eslint-disable-line no-param-reassign

@@ -314,8 +314,8 @@ export default {
         });
     },
     clearSchedules() {
-      if (! confirm('Are you sure?')) return;
-      
+      if (!confirm('Are you sure?')) return;
+
       this.localSchedules
         .map(({ id }) => id)
         .forEach((id) => {
