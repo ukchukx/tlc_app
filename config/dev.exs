@@ -64,6 +64,6 @@ config :phoenix, :plug_init_mode, :runtime
 config :tlc_app, TlcApp.Repo,
   username: "postgres",
   password: "postgres",
-  database: "tlc_dev",
+  database: "tlc",
   hostname: "localhost",
   pool_size: 10

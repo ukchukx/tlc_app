@@ -14,6 +14,11 @@
             @click="showModal()"
             class="btn btn-sm btn-primary"
           >Add schedule</button>
+          <button
+            v-if="localSchedules.length"
+            @click="clearSchedules()"
+            class="btn btn-sm btn-outline-danger"
+          >Clear schedule</button>
         </h6>
       </div>
       <div class="card-body">
@@ -306,6 +311,24 @@ export default {
         .catch(({ response: { data } }) => {
           console.log('error', data);
           this.showFlash('Could not remove schedule', 'error');
+        });
+    },
+    clearSchedules() {
+      if (! confirm('Are you sure?')) return;
+      
+      this.localSchedules
+        .map(({ id }) => id)
+        .forEach((id) => {
+          axios
+            .delete(`/bo/schedules/${id}`)
+            .then(({ data: { success } }) => {
+              if (success) {
+                this.localSchedules = this.localSchedules.filter(s => id !== s.id);
+              }
+            })
+            .catch(({ response: { data } }) => {
+              console.log('error', data);
+            });
         });
     },
     showModal() {
