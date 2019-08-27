@@ -1,6 +1,7 @@
 version: '2'
 services:
   tlc_app:
+    build: .
     image: tlc_app
     container_name: tlc_app
     restart: unless-stopped
