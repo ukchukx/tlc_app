@@ -5,7 +5,6 @@
 class Bounds {
   constructor(opts) {
     this.center = { latitude: 9.0674029, longitude: 7.4283716 }; // TLC
-    // this.center = { latitude: 9.0014854, longitude: 7.4542722 }; // AppMart
     // this.center = { lat: 9.1582655, lng: 7.3132746 }; // Test
     /**
     Outside:
@@ -33,7 +32,12 @@ export default {
   name: 'Location',
   data() {
     return {
-      fence: new Bounds()
+      fence: new Bounds(),
+      geoOptions: {
+        enableHighAccuracy: true,
+        timeout: 5000,
+        maximumAge: 0
+      }
     };
   },
   mounted() {
@@ -42,22 +46,26 @@ export default {
       return;
     }
 
-    navigator.geolocation.watchPosition(
-      ({ coords }) => {
-        console.log(coords);
-        const { latitude, longitude } = coords;
-        const inside = this.fence.inside({ latitude, longitude });
+    this.scheduleNextCall();
+  },
+  methods: {
+    scheduleNextCall() {
+      setTimeout(
+        () => navigator.geolocation.getCurrentPosition(this.getLocation, this.errCallback, this.geoOptions),
+        5000
+      );
+    },
+    getLocation({ coords: { latitude, longitude } }) {
+      console.info('current location', `${latitude}, ${longitude}`);
 
-        this.$emit('location', { inside, latitude, longitude });
-      },
-      (err) => {
-        console.error(err);
-        this.withinLectureArea = false;
-      }, {
-        enableHighAccuracy: true,
-        maximumAge: 0
-      }
-    );
+      this.$emit('location', { inside: this.fence.inside({ latitude, longitude }), latitude, longitude });
+
+      this.scheduleNextCall();
+    },
+    errCallback(err) {
+      console.error(err);
+      this.withinLectureArea = false;
+    }
   }
 };
 </script>

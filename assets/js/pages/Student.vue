@@ -159,7 +159,7 @@ export default {
       this.withinLectureArea = inside;
       this.lat = latitude;
       this.long = longitude;
-      console.info('inside?', inside);
+      console.info('inside?', new Date(), inside);
     },
     mark(schedule) {
       const attendance = { schedule_id: schedule.id, user_id: this.user.id };
