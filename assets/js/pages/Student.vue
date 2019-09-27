@@ -6,7 +6,10 @@
         <div v-if="!withinLectureArea" class="card bg-danger text-white shadow mb-3">
           <div class="card-body">
             Outside lecture area
-            <div class="small">Attendance can only be marked within the lecture area</div>
+            <div class="small">
+              Attendance can only be marked within the lecture area<br>
+              <small>{{ lat }}, {{ long }}</small>
+            </div>
           </div>
         </div>
       </div>
